@@ -1,0 +1,14 @@
+{
+  "temperature": 1.0,
+  "top_p": 0.95,
+  "top_k": 40,
+  "max_new_tokens": 384000,
+  "repetition_penalty": 1.0,
+  "do_sample": true,
+  "reasoning_effort": "max",
+  "thinking_mode": "thinking",
+  "use_cache": true,
+  "pad_token_id": 129277,
+  "bos_token_id": 129278,
+  "eos_token_id": [129279, 129280]
+}

@@ -1,0 +1,12 @@
+# SOVEREIGN — action catalog
+# Actions are the atomic capabilities agents can invoke.
+version: "1.0"
+actions:
+  - { id: memory.store,       file: memory-store.yaml }
+  - { id: memory.search,      file: memory-search.yaml }
+  - { id: github.open-pr,     file: github-open-pr.yaml }
+  - { id: github.open-issue,  file: github-open-issue.yaml }
+  - { id: hf.deploy-space,    file: hf-deploy-space.yaml }
+  - { id: tts.synthesize,     file: tts-synthesize.yaml }
+  - { id: webhook.notify,     file: webhook-notify.yaml }
+  - { id: backup.snapshot,    file: backup-snapshot.yaml }

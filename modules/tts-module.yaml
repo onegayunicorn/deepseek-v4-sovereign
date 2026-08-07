@@ -1,0 +1,11 @@
+# Module: tts — Fish Audio S2-Pro voice synthesis
+id: tts
+description: Text-to-speech synthesis (5B model, prosody control, multi-speaker)
+enabled: true
+model: models/fish-audio-s2-pro
+entrypoints:
+  - models/fish-audio-s2-pro/tts_client.py
+config:
+  sample_rate: 44100
+  chunk_streaming: true
+use_cases: [voice alerts, accessibility, ring/buds voice pipeline, content audio]

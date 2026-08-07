@@ -1,0 +1,75 @@
+# config/permissions.yaml
+# SOVEREIGN — role/permission policies (RBAC + ABAC)
+roles:
+  admin:
+    description: "Full system access"
+    permissions: ["*:*"]
+
+  operator:
+    description: "Day-to-day operations"
+    permissions:
+      - "task:read"
+      - "task:create"
+      - "task:update"
+      - "task:cancel"
+      - "agent:list"
+      - "agent:status"
+      - "memory:search"
+      - "tools:execute"
+      - "jobs:manage"
+      - "system:status"
+      - "system:logs"
+
+  user:
+    description: "Regular user"
+    permissions:
+      - "task:read"
+      - "task:create"
+      - "task:status"
+      - "agent:list"
+      - "memory:search"
+      - "tools:execute:web_search"
+      - "tools:execute:file_ops"
+
+  viewer:
+    description: "Read-only access"
+    permissions:
+      - "task:read"
+      - "agent:list"
+      - "agent:status"
+      - "system:status"
+
+  auditor:
+    description: "Audit trail access"
+    permissions:
+      - "audit:read"
+      - "audit:export"
+      - "system:status"
+
+abac:
+  conditions:
+    - name: "time_window"
+      attribute: "time_of_day"
+      allowed: ["09:00-17:00"]
+    - name: "ip_allowlist"
+      attribute: "client_ip"
+      allowed: ["192.168.1.0/24", "10.0.0.0/8"]
+
+tool_permissions:
+  shell:
+    roles: ["admin", "operator"]
+  web_search:
+    roles: ["admin", "operator", "user"]
+  file_ops:
+    roles: ["admin", "operator", "user"]
+    allowed_patterns: ["*.txt", "*.md", "*.json", "*.yaml", "*.csv"]
+  code_interpreter:
+    roles: ["admin", "operator"]
+  database:
+    roles: ["admin", "operator"]
+  api_client:
+    roles: ["admin", "operator"]
+  browser:
+    roles: ["admin"]
+  email:
+    roles: ["admin"]

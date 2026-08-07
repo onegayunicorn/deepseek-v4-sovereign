@@ -1,0 +1,9 @@
+# SOVEREIGN — routine registry
+# Routines are composable, recurring multi-step procedures.
+version: "1.0"
+routines:
+  - { id: scout-enhance-audit, file: scout-enhance-audit.yaml }
+  - { id: lineage-sync,        file: lineage-sync.yaml }
+  - { id: health-monitor,      file: health-monitor.yaml }
+  - { id: memory-prune,        file: memory-prune.yaml }
+  - { id: release-cycle,       file: release-cycle.yaml }

@@ -1,0 +1,10 @@
+# Webhook: github-pr
+id: github-pr
+source: github
+events: [pull_request.opened, pull_request.synchronize, pull_request.merged]
+endpoint: POST /api/v1/webhooks/github
+handler: audit + notify
+payload_map:
+  repo: payload.repository.full_name
+  pr: payload.pull_request.number
+  action: payload.action

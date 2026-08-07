@@ -1,0 +1,22 @@
+# SOVEREIGN — model-backed agents (see models/registry.yaml)
+id: sovereign-model
+kind: group
+description: Agents bound to the sovereign model family (DeepSeek-V4 lineage).
+agents:
+  - id: sovereign-llm
+    kind: deepseek.chat
+    model: deepseek-v4-sovereign
+    provider: hf-router        # router.huggingface.co/v1 (Novita/Together/DeepInfra/...)
+    context_window: 1048576
+    reasoning_effort: max
+    description: Flagship sovereign model agent — 1M token context, DSpark speculative decoding
+  - id: sovereign-tts
+    kind: tts
+    model: fishaudio/s2-pro
+    task: text-to-speech
+    sample_rate: 44100
+    description: Voice synthesis via Fish Audio S2-Pro (5B)
+  - id: sovereign-voice
+    kind: tool
+    model: fishaudio/s2-pro
+    description: Voice pipeline agent (ring + buds integration)

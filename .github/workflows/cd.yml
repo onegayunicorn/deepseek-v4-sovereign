@@ -1,0 +1,27 @@
+name: CD
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Build release
+        env:
+          VERSION: ${{ github.ref_name }}
+        run: |
+          pip install -r requirements.txt
+          bash distribution/release_pipeline.sh
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            builds/apk/app/build/outputs/apk/*.apk \
+            builds/exe/dist/*.exe \
+            --title "SOVEREIGN ${{ github.ref_name }}" \
+            --generate-notes || true

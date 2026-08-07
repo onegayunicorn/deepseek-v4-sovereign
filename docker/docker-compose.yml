@@ -1,0 +1,25 @@
+# SOVEREIGN — production stack
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: sovereign/orchestrator:${SOVEREIGN_VERSION:-0.1.0}
+    ports:
+      - "8000:8000"
+    environment:
+      SOVEREIGN_MODE: production
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+    volumes:
+      - sovereign-data:/app/data
+      - sovereign-logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  sovereign-data:
+  sovereign-logs:

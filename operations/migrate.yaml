@@ -1,0 +1,6 @@
+# Operation: migrate
+id: migrate
+description: Apply schema migrations to state/memory databases
+script: scripts/migrate.sh
+databases: [data/state/orchestration_state.sqlite, data/memory/*.db]
+versioning: data/state/migrations/

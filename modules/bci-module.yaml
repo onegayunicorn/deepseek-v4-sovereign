@@ -1,0 +1,14 @@
+# Module: bci — Sovereign Ring + Buds brain-computer interface
+id: bci
+description: Neural + physiological telemetry from ring/earbuds hardware
+enabled: true
+devices:
+  ring: hardware/bci-ring
+  earbuds: hardware/earbuds
+sensors:
+  - { type: eeg, device: ring, rate_hz: 500, source: ADS1299 }
+  - { type: ppg, device: ring, rate_hz: 100, source: MAX30102 }
+  - { type: imu, device: ring, rate_hz: 200, source: BMI270 }
+  - { type: voice, device: earbuds, source: dual-mic ENC }
+integration: [../drivers, ../sensors]
+protocol: hardware/bci-ring/protocol.md

@@ -1,0 +1,8 @@
+# Job: data-migration
+id: data-migration
+kind: migrate
+description: Migrate state/memory databases to latest schema
+params:
+  databases: [data/state/orchestration_state.sqlite, data/memory/episodic/episodes.db, data/memory/semantic/facts.db]
+  dry_run: true
+script: scripts/migrate.sh

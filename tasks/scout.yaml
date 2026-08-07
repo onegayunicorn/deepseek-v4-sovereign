@@ -1,0 +1,10 @@
+# Task type: scout — GitHub repo acquisition + analysis (Expanded Intelligence)
+id: scout
+description: Scout GitHub repos and analyze them (onegayunicorn integration)
+agent: tool
+integration: ../onegayunicorn
+payload_schema:
+  repo: { type: string }
+  branch: { type: string }
+  full_scan: { type: boolean, default: false }
+defaults: { priority: 6, max_retries: 2 }

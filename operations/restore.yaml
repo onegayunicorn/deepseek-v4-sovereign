@@ -1,0 +1,8 @@
+# Operation: restore
+id: restore
+description: Restore from a backup snapshot
+script: scripts/restore.sh
+inputs:
+  snapshot_id: string
+  target: { type: enum, values: [state, memory, artifacts, all] }
+prerequisites: [orchestrator stopped]

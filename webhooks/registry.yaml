@@ -1,0 +1,8 @@
+# SOVEREIGN — webhook receiver registry
+version: "1.0"
+webhooks:
+  - { id: github-push,       file: github-push.yaml,       source: github }
+  - { id: github-pr,         file: github-pr.yaml,         source: github }
+  - { id: hf-model-update,   file: huggingface-model-update.yaml, source: huggingface }
+  - { id: hf-job-complete,   file: huggingface-job-complete.yaml, source: huggingface }
+  - { id: generic-inbound,   file: generic-inbound.yaml,   source: generic }

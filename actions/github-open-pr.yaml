@@ -1,0 +1,12 @@
+# Action: github.open-pr
+id: github.open-pr
+description: Open a pull request (via the connected GitHub MCP toolkit)
+inputs:
+  owner: { type: string, required: true }
+  repo: { type: string, required: true }
+  title: { type: string, required: true }
+  head: { type: string, required: true }
+  base: { type: string, default: main }
+  body: { type: string }
+permission: tools:execute:api_client
+integration: github (MCP toolkit — github-assistant plugin)

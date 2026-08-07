@@ -1,0 +1,11 @@
+# Task type: reason
+id: reason
+description: Multi-step reasoning with a visible thought chain
+agent: deepseek.reasoner
+model: deepseek-v4-reasoner
+routing: reasoning_tasks
+payload_schema:
+  input: { type: string, required: true }
+  max_tokens: { type: integer, default: 8192 }
+  reasoning_effort: { type: enum, values: [low, high, max], default: high }
+defaults: { priority: 5, max_retries: 3 }

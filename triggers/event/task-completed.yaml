@@ -1,0 +1,11 @@
+# Event trigger: on task.completed, store episode + notify subscribers
+id: task-completed-hook
+kind: event
+event: task.completed
+enabled: true
+actions:
+  - action: memory.store
+    memory_type: episodic
+  - action: webhook.notify
+    source: generic
+    topic: tasks

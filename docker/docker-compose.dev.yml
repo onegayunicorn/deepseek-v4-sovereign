@@ -1,0 +1,18 @@
+# SOVEREIGN — development stack (source-mounted, reload)
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    image: sovereign/orchestrator:dev
+    ports:
+      - "8000:8000"
+    environment:
+      SOVEREIGN_MODE: development
+      LOG_LEVEL: DEBUG
+    volumes:
+      - ../src:/app/src
+      - ../config:/app/config
+      - ../data:/app/data
+      - ../logs:/app/logs
+    restart: unless-stopped

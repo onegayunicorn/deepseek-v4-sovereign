@@ -1,0 +1,49 @@
+# config/memory.yaml
+# SOVEREIGN — memory backends & retention rules
+memory:
+  working:
+    backend: "memory"           # redis | sqlite | memory
+    ttl_seconds: 3600
+    max_items: 1000
+
+  episodic:
+    backend: "sqlite"
+    connection_string: "sqlite:///data/memory/episodic/episodes.db"
+    retention_days: 30
+    max_episodes: 10000
+    auto_compress: true
+
+  semantic:
+    backend: "sqlite"
+    connection_string: "sqlite:///data/memory/semantic/facts.db"
+    retention_days: 365
+    max_facts: 100000
+
+  vector:
+    backend: "chromadb"         # chromadb | faiss | memory
+    connection_string: "chroma://data/memory/vectors/chroma"
+    embedding_dimension: 1536
+    collection_name: "memories"
+    index_type: "hnsw"
+    metric: "cosine"
+    shards: 1
+
+  procedural:
+    backend: "sqlite"
+    connection_string: "sqlite:///data/memory/procedural.db"
+    max_procedures: 1000
+
+  retrieval:
+    rag:
+      k_nearest_neighbors: 5
+      similarity_threshold: 0.7
+      reranker_enabled: true
+      reranker_model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+      chunk_size: 512
+      chunk_overlap: 50
+
+  pruning:
+    enabled: true
+    interval_hours: 24
+    threshold: 0.6
+    archive_expired: true

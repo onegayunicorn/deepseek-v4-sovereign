@@ -1,0 +1,8 @@
+# Task type: coordinate
+id: coordinate
+description: Decompose a goal into subtasks and dispatch them
+agent: coordinator
+payload_schema:
+  input: { type: string, required: true }
+  plan: { type: array, items: { type: object } }
+defaults: { priority: 5, max_retries: 1 }

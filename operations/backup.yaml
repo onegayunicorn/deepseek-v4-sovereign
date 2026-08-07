@@ -1,0 +1,8 @@
+# Operation: backup
+id: backup
+description: Snapshot state, memory, and artifacts to the sovereign bucket
+script: scripts/backup.sh
+targets: [data/state, data/memory, data/artifacts, logs/audits]
+bucket: sovereign-backup
+schedule: daily
+verify: checksums + restore drill (monthly)

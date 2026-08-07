@@ -1,0 +1,11 @@
+# Webhook: generic-inbound
+id: generic-inbound
+source: generic
+events: ["*"]
+endpoint: POST /api/v1/webhooks/generic
+auth: optional bearer token
+handler: route by event → task mapping table
+mappings:
+  task.completed: notify subscribers
+  release.published: run release announce
+  hardware.alert: escalate to supervisor

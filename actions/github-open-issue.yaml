@@ -1,0 +1,11 @@
+# Action: github.open-issue
+id: github.open-issue
+description: Open an issue on a repository
+inputs:
+  owner: { type: string, required: true }
+  repo: { type: string, required: true }
+  title: { type: string, required: true }
+  body: { type: string }
+  labels: { type: string }
+permission: tools:execute:api_client
+integration: github (MCP toolkit)

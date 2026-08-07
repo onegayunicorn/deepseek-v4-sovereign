@@ -1,0 +1,6 @@
+# Operation: healthcheck
+id: healthcheck
+description: Verify orchestrator, hardware, and persistence health
+script: scripts/healthcheck.sh
+checks: [api /health, queue depth, memory writable, hardware adapters, audit chain]
+exit_codes: { ok: 0, degraded: 1, down: 2 }

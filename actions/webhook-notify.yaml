@@ -1,0 +1,9 @@
+# Action: webhook.notify
+id: webhook.notify
+description: Fire an outbound webhook notification
+inputs:
+  source: { type: string, required: true }
+  topic: { type: string }
+  payload: { type: object }
+permission: webhook:notify
+implemented_by: src/sovereign/webhooks.py

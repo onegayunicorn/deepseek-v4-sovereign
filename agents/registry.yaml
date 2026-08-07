@@ -1,0 +1,10 @@
+# SOVEREIGN — agent registry
+# Every agent definition maps to an implementation in src/sovereign/agents/
+# (or to a connected project via integrations/).
+version: "1.0"
+agents:
+  - { id: sovereign-core,      file: sovereign-core.agent.yaml }
+  - { id: sovereign-model,     file: sovereign-model.agent.yaml }
+  - { id: hardware,            file: hardware.agent.yaml }
+  - { id: connected-projects,  file: connected-projects.agent.yaml }
+  - { id: distribution,        file: distribution.agent.yaml }

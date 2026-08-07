@@ -1,0 +1,12 @@
+# Webhook trigger: HuggingFace model update → re-index + benchmark
+id: hf-model-update
+kind: webhook
+source: huggingface
+event: model.update
+enabled: true
+task:
+  type: model-benchmark
+  payload:
+    model: "{payload.model_id}"
+  priority: 4
+integration: models/registry.yaml

@@ -1,0 +1,38 @@
+# config/security.yaml
+# SOVEREIGN — encryption & auth settings
+security:
+  encryption:
+    algorithm: "AES-256-GCM"
+    key_derivation: "PBKDF2-HMAC-SHA256"
+    iterations: 600000
+
+  authentication:
+    provider: "jwt"             # jwt | oauth2 | none
+    jwt:
+      algorithm: "HS256"
+      access_token_ttl_minutes: 60
+      refresh_token_ttl_days: 7
+    oauth2:
+      enabled: true
+      providers: ["github", "huggingface", "microsoft"]
+
+  authorization:
+    engine: "rbac-abac"         # rbac | abac | rbac-abac
+    policy_source: "config/permissions.yaml"
+
+  keyring:
+    backend: "file"             # file | env | vault
+    path: "data/state/keyring.json"
+    master_key_env: "AES_KEY_B64"
+
+  sandbox:
+    default_memory_mb: 1024
+    default_cpu_quota: 1.0
+    network_isolated: false
+    tmpfs_size_mb: 256
+
+  audit:
+    tamper_evident: true        # hash-chained JSONL
+    export_formats: ["jsonl", "csv"]
+
+  compliance: ["GDPR", "SOC2"]

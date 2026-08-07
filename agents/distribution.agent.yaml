@@ -1,0 +1,18 @@
+# SOVEREIGN — distribution agents (build → sign → publish)
+id: distribution
+kind: group
+description: Agents that drive the software product distribution pipeline.
+agents:
+  - id: apk-builder
+    kind: tool
+    build: builds/apk/build_apk.sh
+    description: Android APK build agent
+  - id: exe-builder
+    kind: tool
+    build: builds/exe/build_exe.ps1
+    description: Windows EXE build agent
+  - id: release-manager
+    kind: tool
+    pipeline: distribution/release_pipeline.sh
+    channels: [github-releases, huggingface-spaces, apk-direct, winget, chocolatey, npm, docker-hub]
+    description: Orchestrates releases across channels

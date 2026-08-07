@@ -1,0 +1,71 @@
+# SOVEREIGN — sovereign bucket layout (multi-cloud)
+# Connects to the OGU multi-cloud manager at ../buckets (S3/GCS/Azure abstraction).
+version: "1.0"
+providers:
+  primary: aws
+  alternates: [gcp, azure]
+  encryption: AES256
+
+buckets:
+  - id: sovereign-raw
+    provider: aws
+    name: sovereign-raw-${ENV}
+    purpose: Raw BCI/audio/sensor streams from ring + buds
+    access: private
+    versioning: true
+    lifecycle:
+      - { action: transition, days: 30, to: STANDARD_IA }
+      - { action: transition, days: 90, to: GLACIER }
+      - { action: expire, days: 730 }
+
+  - id: sovereign-models
+    provider: aws
+    name: sovereign-models-${ENV}
+    purpose: Model weights, adapters, quantizations, registry cache
+    access: private
+    versioning: true
+    lifecycle:
+      - { action: transition, days: 180, to: GLACIER_IR }
+
+  - id: sovereign-artifacts
+    provider: aws
+    name: sovereign-artifacts-${ENV}
+    purpose: Task outputs, builds (apk/exe), reports, TTS audio
+    access: private
+    versioning: true
+    lifecycle:
+      - { action: transition, days: 60, to: STANDARD_IA }
+      - { action: expire, days: 1095 }
+
+  - id: sovereign-memory
+    provider: aws
+    name: sovereign-memory-${ENV}
+    purpose: Episodic/semantic memory exports, vector snapshots, knowledge docs
+    access: private
+    versioning: true
+    lifecycle:
+      - { action: transition, days: 90, to: STANDARD_IA }
+      - { action: expire, days: 1460 }
+
+  - id: sovereign-audit
+    provider: aws
+    name: sovereign-audit-${ENV}
+    purpose: Tamper-evident audit trail, compliance evidence
+    access: private
+    versioning: true
+    object_lock: true
+    lifecycle:
+      - { action: expire, days: 2555 }
+
+  - id: sovereign-backup
+    provider: aws
+    name: sovereign-backup-${ENV}
+    purpose: Full snapshots (state + memory + artifacts)
+    access: private
+    versioning: true
+    lifecycle:
+      - { action: transition, days: 30, to: GLACIER }
+      - { action: expire, days: 1825 }
+
+cors:
+  - { allowed_origins: ["https://console.sovereign.internal"], allowed_methods: [GET, PUT], max_age_seconds: 3600 }

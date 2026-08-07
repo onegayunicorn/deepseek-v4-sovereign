@@ -1,0 +1,8 @@
+# SOVEREIGN — job registry (long-running work)
+version: "1.0"
+jobs:
+  - { id: model-finetune,  file: model-finetune.yaml,  kind: train }
+  - { id: corpus-index,    file: corpus-index.yaml,    kind: index }
+  - { id: tts-batch,       file: tts-batch.yaml,       kind: tts }
+  - { id: data-migration,  file: data-migration.yaml,  kind: migrate }
+  - { id: build-release,   file: build-release.yaml,   kind: build }

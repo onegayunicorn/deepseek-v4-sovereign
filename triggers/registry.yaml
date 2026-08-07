@@ -1,0 +1,10 @@
+# SOVEREIGN — trigger registry
+# Triggers fire tasks: cron (time-based), event (bus-based), webhook (inbound).
+version: "1.0"
+triggers:
+  - { id: daily-lineage-sync,   file: cron/daily-lineage-sync.yaml,   kind: cron }
+  - { id: hourly-health-audit,  file: cron/hourly-health-audit.yaml,  kind: cron }
+  - { id: task-completed-hook,  file: event/task-completed.yaml,      kind: event }
+  - { id: agent-failed-hook,    file: event/agent-failed.yaml,        kind: event }
+  - { id: github-push,          file: webhook/github-push.yaml,       kind: webhook }
+  - { id: hf-model-update,      file: webhook/hf-model-update.yaml,   kind: webhook }

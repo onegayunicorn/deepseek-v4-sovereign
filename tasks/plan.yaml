@@ -1,0 +1,10 @@
+# Task type: plan
+id: plan
+description: Produce an execution plan (steps, owners, order)
+agent: deepseek.chat
+model: deepseek-v4-sovereign
+routing: coordinator_tasks
+payload_schema:
+  goal: { type: string, required: true }
+  constraints: { type: object }
+defaults: { priority: 5, max_retries: 2 }

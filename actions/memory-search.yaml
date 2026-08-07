@@ -1,0 +1,8 @@
+# Action: memory.search
+id: memory.search
+description: Semantic / keyword search across memory
+inputs:
+  query: { type: string, required: true }
+  k: { type: integer, default: 10 }
+permission: memory:search
+implemented_by: src/sovereign/agents/memory_agent.py

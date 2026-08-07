@@ -1,0 +1,11 @@
+# Webhook: github-push
+id: github-push
+source: github
+events: [push]
+endpoint: POST /api/v1/webhooks/github
+signature: X-Hub-Signature-256 (HMAC-SHA256, secret from keyring)
+handler: scout → analyze → enhance (routine scout-enhance-audit)
+payload_map:
+  repo: payload.repository.full_name
+  ref: payload.ref
+  pusher: payload.pusher.name

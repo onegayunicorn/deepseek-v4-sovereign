@@ -1,0 +1,9 @@
+# Job: corpus-index
+id: corpus-index
+kind: index
+description: Build/refresh the knowledge index over docs + integrations
+params:
+  directories: [data/knowledge/documents, docs, integrations]
+  embedder: hash          # hash | openai | huggingface
+  chunk_size: 512
+output: data/knowledge/index.json

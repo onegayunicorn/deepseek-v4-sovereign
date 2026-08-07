@@ -1,0 +1,10 @@
+# Action: tts.synthesize — voice synthesis via Fish Audio S2-Pro
+id: tts.synthesize
+description: Synthesize speech audio from text
+inputs:
+  text: { type: string, required: true }
+  voice: { type: string, default: default }
+  speed: { type: number, default: 1.0 }
+permission: tools:execute
+model: models/fish-audio-s2-pro
+output: data/artifacts/outputs/tts/{ts}.wav

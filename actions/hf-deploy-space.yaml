@@ -1,0 +1,9 @@
+# Action: hf.deploy-space
+id: hf.deploy-space
+description: Deploy / update a HuggingFace Space (via the connected HF MCP toolkit)
+inputs:
+  space_name: { type: string, required: true }
+  sdk: { type: enum, values: [gradio, streamlit, static, docker], default: gradio }
+  visibility: { type: enum, values: [public, private], default: public }
+permission: tools:execute:api_client
+integration: huggingface (MCP toolkit — huggingface-assistant plugin)

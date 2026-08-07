@@ -1,0 +1,10 @@
+# SOVEREIGN — module catalog
+# Modules are pluggable capability bundles; each maps to code + config.
+version: "1.0"
+modules:
+  - { id: memory,        file: memory-module.yaml }
+  - { id: knowledge,     file: knowledge-module.yaml }
+  - { id: tts,           file: tts-module.yaml }
+  - { id: bci,           file: bci-module.yaml }
+  - { id: security,      file: security-module.yaml }
+  - { id: integration,   file: integration-module.yaml }

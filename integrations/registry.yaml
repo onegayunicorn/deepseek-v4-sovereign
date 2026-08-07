@@ -1,0 +1,26 @@
+# SOVEREIGN — connected projects registry
+# Every recent OGU project, its role, and its integration surface.
+version: "2.5"
+workspace_root: ".."   # sibling projects live one level up from this monorepo
+
+projects:
+  - { id: mocking-jay,                path: ../mocking-jay,                role: digital-twin,        surface: [SIMULATION_PROMPT.md, main.py, udt] }
+  - { id: photonic-entanglement-engine, path: ../photonic-entanglement-engine, role: quantum,           surface: [src, hub, agents, skills, website] }
+  - { id: dna-unfolding-lab,          path: ../dna-unfolding-lab,          role: simulation,          surface: [src, agents, workflows, sandbox, tasks] }
+  - { id: codality,                   path: ../codality,                   role: platform,            surface: [codality_osa_complete_no_stubs] }
+  - { id: universal-driver,           path: ../universal-driver,           role: drivers,             surface: [packages, docs, turbo.json] }
+  - { id: core,                       path: ../core,                       role: qlb-core,            surface: [entanglement_manager, bloch_sphere, harmonic_resonance_engine, pvd_engine] }
+  - { id: drivers,                    path: ../drivers,                    role: cpp-bci,             surface: [muse_driver, qlb_arduino_driver, device_registry] }
+  - { id: sensors,                    path: ../sensors,                    role: sensing,             surface: [eeg_processor, rppg_sensor, thermal_sensor, touch_telemetry, vocal_analyzer] }
+  - { id: pipelines,                  path: ../pipelines,                  role: etl,                 surface: [ancestral_data_pipeline, lineage_etl, resonance_pipeline] }
+  - { id: buckets,                    path: ../buckets,                    role: storage,             surface: [bucket_manager, bucket_config.yaml] }
+  - { id: kaleidoscope,               path: ../kaleidoscope,               role: intent,              surface: [intent_decoder, persona_generator, simulation_runner] }
+  - { id: moodchroma,                 path: ../moodchroma,                 role: emotion,             surface: [biometric_pipeline, emotion_relay, proactive_alert] }
+  - { id: optogenetics,               path: ../optogenetics,               role: control,             surface: [oi_controller, photonic_entanglement, global_correction_protocol] }
+  - { id: skills,                     path: ../skills,                     role: skills,              surface: [lineage-scanner, moodchroma-analyzer, optogenetic-controller, quantum-lineage-bridge, resonance-monitor] }
+  - { id: website,                    path: ../website,                    role: dashboard,           surface: [index.html] }
+  - { id: ogu-build,                  path: ../ogu-build,                  role: builds,              surface: [src/turmo, src/universal_driver] }
+  - { id: onegayunicorn,              path: ../onegayunicorn,              role: intelligence,        surface: [main.py, core, config, web, workflows, reports] }
+  - { id: deploy,                     path: ../deploy,                     role: infra,               surface: [docker-compose.yml, Dockerfile, nginx.conf] }
+
+flagships: [mocking-jay, photonic-entanglement-engine, core, onegayunicorn]

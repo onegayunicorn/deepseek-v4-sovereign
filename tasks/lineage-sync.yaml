@@ -1,0 +1,12 @@
+# Task type: lineage-sync — connects the OGU lineage pipelines
+id: lineage-sync
+description: Run lineage ETL over connected projects (ancestral data, resonance, lineage bridges)
+agent: tool
+integration:
+  pipelines: [../pipelines/ancestral_data_pipeline.py, ../pipelines/lineage_etl.py, ../pipelines/resonance_pipeline.py]
+  core: ../core
+  engines: [../photonic-entanglement-engine, ../dna-unfolding-lab]
+payload_schema:
+  source: { type: string }
+  pipelines: { type: array }
+defaults: { priority: 5, max_retries: 2 }

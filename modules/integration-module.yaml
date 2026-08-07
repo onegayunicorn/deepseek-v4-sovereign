@@ -1,0 +1,25 @@
+# Module: integration — connects all recent OGU work
+id: integration
+description: Registry + connector wiring every sibling project into the orchestrator
+enabled: true
+registry: integrations/registry.yaml
+connector: integrations/connector.py
+connected:
+  - { id: mocking-jay, path: ../mocking-jay, role: digital-twin }
+  - { id: photonic-entanglement-engine, path: ../photonic-entanglement-engine, role: quantum }
+  - { id: dna-unfolding-lab, path: ../dna-unfolding-lab, role: simulation }
+  - { id: codality, path: ../codality, role: platform }
+  - { id: universal-driver, path: ../universal-driver, role: drivers }
+  - { id: core, path: ../core, role: qlb-core }
+  - { id: drivers, path: ../drivers, role: cpp-bci }
+  - { id: sensors, path: ../sensors, role: sensing }
+  - { id: pipelines, path: ../pipelines, role: etl }
+  - { id: buckets, path: ../buckets, role: storage }
+  - { id: kaleidoscope, path: ../kaleidoscope, role: intent }
+  - { id: moodchroma, path: ../moodchroma, role: emotion }
+  - { id: optogenetics, path: ../optogenetics, role: control }
+  - { id: skills, path: ../skills, role: skills }
+  - { id: website, path: ../website, role: dashboard }
+  - { id: ogu-build, path: ../ogu-build, role: builds }
+  - { id: onegayunicorn, path: ../onegayunicorn, role: intelligence }
+  - { id: deploy, path: ../deploy, role: infra }

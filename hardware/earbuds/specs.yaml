@@ -1,0 +1,167 @@
+# SOVEREIGN AI Earbuds — Hardware & Firmware Specification
+# Brand palette: bg #0A0A10 · cyan #00E5FF · mint #00FFCC
+# Version 1.0 — reference spec for the true-wireless AI earbuds.
+
+brand:
+  name: SOVEREIGN
+  product: AI Earbuds
+  palette:
+    background: "#0A0A10"
+    accent_cyan: "#00E5FF"
+    accent_mint: "#00FFCC"
+  revision: "1.0"
+
+form_factor:
+  type: true_wireless_stereo (TWS)
+  per_bud_weight_g: 5.1
+  case_weight_g: 48
+  ingress_protection: IPX5          # sweat / rain resistant, not submersible
+  materials:
+    - matte_anodized_aluminum       # bud + case shells
+    - medical_grade_silicone        # ear tips + wings (ISO 10993)
+    - titanium_bone_conduction_plate
+
+dsp:
+  part: Qualcomm QCC5171            # alternative: BES2700 (see dsp_alternative)
+  cores: dual-core 32-bit (audio + application)
+  ram_kb: 640
+  flash_mb: 32 (QSPI)
+  audio_engine: Qualcomm ANC Gen3 / LE Audio (LC3)
+  dsp_alternative:
+    part: BES2700
+    cores: dual Cortex-M33 @ 260 MHz
+    ram_kb: 512
+    flash_mb: 32
+
+audio:
+  codecs:
+    - aptX Lossless                # 24-bit / 48 kHz lossless
+    - LDAC                         # up to 990 kbps
+    - AAC                          # 256 kbps
+    - SBC                          # fallback
+  speaker:
+    driver_mm: 11
+    type: dynamic + planar hybrid
+    frequency_response_hz: [10, 40000]
+    impedance_ohm: 16
+    max_spl_db: 105
+  microphones:
+    - name: enc_mic_outer           # MEMS, SNR 65 dB(A)
+      qty: 1
+    - name: enc_mic_inner           # MEMS, SNR 65 dB(A)
+      qty: 1
+    - name: bone_conduction_mic     # accelerometer-coupled voice pickup
+      qty: 1
+  anc: hybrid (feedforward + feedback), up to -45 dB
+  transparency: ambient passthrough with wind-noise reduction
+
+biometrics:
+  ppg:
+    part: MAX30102-class in-ear PPG
+    interface: I2C
+    sample_rate_hz: 100
+    purpose: heart rate, HRV, blood oxygen
+  temperature:
+    type: NTC skin-contact thermistor
+    resolution_c: 0.05
+    accuracy_c: 0.1
+    purpose: core-temperature proxy, heat-stress alert
+  imu:
+    part: BMI270-class 6-axis
+    sample_rate_hz: 200
+    purpose: head tracking (spatial audio), tap/touch gestures, activity
+
+connectivity:
+  ble:
+    spec: BLE 5.3
+    profiles: [LE Audio (ISOC), A2DP, HFP, GATT]
+    audio_codec_lc3: true           # LE Audio mandatory codec
+    dual_bud_relay: true            # primary bud relays to secondary
+    tx_power_db: [0, 8]
+    pairing: LE Secure Connections + bonding
+  charger:
+    case_battery_mah: 500
+    case_charge: USB-C PD 5 V / 1 A + Qi 5 W
+    bud_charge: pogo pins in case
+    quick_charge: 10 min → 2 h playback
+
+power:
+  battery_per_bud_mah: 45
+  runtime:
+    playback_h: 8                   # ANC on, aptX Lossless, moderate volume
+    playback_anc_off_h: 9.5
+    talk_h: 6.5                     # dual-mic ENC + BT call
+    with_case_total_h: 40           # 500 mAh case, 4+ full refills
+    standby_h: 120
+  power_budget_per_bud:
+    total_avg_ma: 20.1              # sum of per-subsystem avg_ma below
+    notes: >
+      Published 8 h playback figure assumes 3.85 V high-density cell (≈58 mWh)
+      and vendor power-management (audio DSP sleep, class-H amp, radio duty
+      shaping). The table above is the conservative worst case at 3.7 V.
+    items:
+    - subsystem: DSP + codec decode (QCC5171 active)
+      current_ma: 9.0
+      duty: 100
+      avg_ma: 9.0
+    - subsystem: ANC + audio amp
+      current_ma: 6.5
+      duty: 100
+      avg_ma: 6.5
+    - subsystem: mics + bone-conduction
+      current_ma: 2.0
+      duty: 100
+      avg_ma: 2.0
+    - subsystem: BLE 5.3 audio (ISOC 2x, ~7.5 ms interval)
+      current_ma: 8.0
+      duty: 20
+      avg_ma: 1.6
+    - subsystem: in-ear PPG + temp (biometric burst every 5 s)
+      current_ma: 4.0
+      duty: 5
+      avg_ma: 0.2
+    - subsystem: edge inference (wake-word + tiny ASR, 3% duty)
+      current_ma: 12.0
+      duty: 3
+      avg_ma: 0.4
+    - subsystem: regulator quiescent + leakage
+      current_ma: 0.4
+      duty: 100
+      avg_ma: 0.4
+
+performance:
+  latency:
+    pipeline_target_ms: 62.7        # voice-assist path
+    total_budget_ms: 150            # spec ceiling incl. jitter & buffering
+    stages:
+    # Audio path latency budget (end-to-end, mic → user-perceived output).
+    - stage: mic capture + ADC (48 kHz, 128-sample frame)
+      ms: 2.7
+    - stage: AEC + noise reduction (hybrid ANC engine)
+      ms: 4.0
+    - stage: VAD + wake-word / ASR inference (on-device)
+      ms: 40.0
+    - stage: audio render + DAC (with spatial/head-tracking)
+      ms: 6.0
+    - stage: BLE LE Audio transmit (ISOC, 10 ms interval)
+      ms: 10.0
+  head_tracking_latency_ms: 20      # IMU → spatial render
+  biometric_reporting_hz: 0.2       # every 5 s to Sovereign OS
+
+firmware:
+  language: C (C11) / DSP assembly, Qualcomm Kalimba or BES SDK
+  main_source: firmware/main.c
+  features:
+    - codec_init: I2S to QCC5171, 48 kHz, 24-bit, frame 128 samples
+    - enc_pipeline: AEC → NR → VAD (on DSP)
+    - wake_word: on-device keyword spotter (placeholder hook)
+    - ble_audio: LE Audio ISOC + A2DP fallback, dual-bud relay
+    - touch_ctrl: tap/double-tap/hold on capacitive pad
+    - biometrics: in-ear PPG + temp sampling, 5 s reporting period
+    - power_mgmt: case-aware charging, deep sleep in case
+    - ota: A/B DFU over BLE
+
+certification:
+  regulatory: [FCC Part 15/18, CE RED, TELEC]
+  audio: aptX Lossless + LDAC licensing via Qualcomm / Sony
+  body_safety: ear-tip materials ISO 10993-5/10, sound exposure < 85 dB(A) 8h (WHO)

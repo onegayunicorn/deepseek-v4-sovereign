@@ -1,0 +1,14 @@
+# Module: memory
+id: memory
+description: Multi-type memory subsystem (working/episodic/semantic/procedural/vector)
+enabled: true
+backends:
+  working: memory
+  episodic: sqlite
+  semantic: sqlite
+  vector: chromadb
+config_ref: config/memory.yaml
+entrypoints:
+  - src/sovereign/memory/memory_manager.py
+  - src/sovereign/memory/retrieval.py
+dependencies: [sqlite3 (stdlib), chromadb (optional)]

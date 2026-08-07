@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sovereign-config
+data:
+  SOVEREIGN_MODE: "production"
+  LOG_LEVEL: "INFO"
+  VECTOR_BACKEND: "memory"
+  HF_ROUTER_URL: "https://router.huggingface.co/v1"

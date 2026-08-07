@@ -1,0 +1,11 @@
+# Routine: release cycle (software product distribution)
+id: release-cycle
+description: Version → build apk/exe → sign → publish → announce
+steps:
+  - { action: version.bump, payload: { version: "{VERSION}" } }
+  - { action: build.apk }
+  - { action: build.exe }
+  - { action: sign.artifacts }
+  - { action: publish.channels, payload: { channels: "{CHANNELS}" } }
+  - { action: webhook.notify, payload: { topic: release, source: generic } }
+pipeline_ref: distribution/release_pipeline.sh

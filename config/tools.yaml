@@ -1,0 +1,64 @@
+# config/tools.yaml
+# SOVEREIGN — available tools & ACLs
+tools:
+  builtin:
+    - name: "shell"
+      enabled: true
+      sandbox: true
+      timeout_seconds: 30
+      allowed_commands: ["ls", "cat", "grep", "find", "python", "node", "git"]
+      blocked_commands: ["rm -rf", "sudo", "chmod", "dd", "mkfs"]
+
+    - name: "web_search"
+      enabled: true
+      provider: "local"         # local | duckduckgo | bing | google
+      max_results: 10
+      timeout_seconds: 10
+      rate_limit_requests_per_minute: 60
+
+    - name: "file_ops"
+      enabled: true
+      allowed_paths: ["./data/artifacts/**", "/tmp/**", "../integrations/**"]
+      max_file_size_mb: 100
+      max_files_per_operation: 50
+
+    - name: "code_interpreter"
+      enabled: true
+      max_execution_time_seconds: 120
+      max_memory_mb: 1024
+      allowed_imports: ["json", "csv", "datetime", "math", "random", "collections", "itertools"]
+      blocked_imports: ["os", "subprocess", "socket", "requests"]
+
+    - name: "database"
+      enabled: true
+      connection_pool_size: 5
+      query_timeout_seconds: 30
+      allowed_dbs: ["data/state/orchestration_state.sqlite"]
+      read_only: false
+
+    - name: "api_client"
+      enabled: true
+      allowlist:
+        - "https://router.huggingface.co/v1/**"
+        - "https://api.github.com/**"
+      timeout_seconds: 30
+      max_retries: 3
+
+    - name: "browser"
+      enabled: false
+      headless: true
+      timeout_seconds: 60
+
+    - name: "email"
+      enabled: false
+      smtp_server: "smtp.example.com"
+      smtp_port: 587
+      use_tls: true
+      from_address: "orchestrator@sovereign.ai"
+
+  custom_tools_path: "./src/sovereign/tools/custom/"
+
+tool_execution:
+  max_parallel_tools: 10
+  tool_timeout_seconds: 60
+  default_priority: 5

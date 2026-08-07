@@ -1,0 +1,37 @@
+# config/logging.yaml
+# SOVEREIGN — log levels, formats, destinations
+logging:
+  level: "INFO"
+  format: "json"                # json | text
+  handlers:
+    console:
+      enabled: true
+      level: "INFO"
+    file:
+      enabled: true
+      path: "./logs/system/orchestrator.log"
+      level: "DEBUG"
+      rotation: "1 day"
+      retention: "30 days"
+    audit:
+      enabled: true
+      path: "./logs/audits/audit.jsonl"
+      level: "INFO"
+      rotation: "1 day"
+      retention: "365 days"
+    execution:
+      enabled: true
+      path: "./logs/executions/task_{task_id}.log"
+      level: "DEBUG"
+
+  structured:
+    include_timestamp: true
+    include_thread_id: true
+    include_process_id: true
+    include_trace_id: true
+    include_correlation_id: true
+
+  sensitive_data_redaction:
+    enabled: true
+    patterns: ["api_key", "secret", "password", "token", "authorization"]
+    replacement: "***REDACTED***"

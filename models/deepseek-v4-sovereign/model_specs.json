@@ -1,0 +1,37 @@
+{
+  "model_id": "sovereign/deepseek-v4-sovereign",
+  "display_name": "DeepSeek-V4-Sovereign",
+  "base_model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "license": "MIT",
+  "model_size_params": "304B",
+  "architecture": "Mixture-of-Experts (MoE) with DSpark speculative decoding",
+  "precision_supported": ["BF16", "F16", "F32", "F8", "E4M3", "E2M1", "INT8"],
+  "context_window": 1048576,
+  "max_output_tokens": 384000,
+  "reasoning_effort_levels": ["low", "high", "max"],
+  "recommended_sampling": {
+    "agentic": {"temperature": 1.0, "top_p": 0.95},
+    "default": {"temperature": 1.0, "top_p": 1.0}
+  },
+  "speculative_decoding": {
+    "method": "dspark",
+    "num_speculative_tokens": 7,
+    "draft_sample_method": "greedy"
+  },
+  "serving": {
+    "vllm": "vllm serve deepseek-ai/DeepSeek-V4-Flash-0731 --trust-remote-code --kv-cache-dtype fp8 --block-size 256 --data-parallel-size 4 --enable-expert-parallel --moe-backend deep_gemm_mega_moe --speculative-config '{\"method\":\"dspark\",\"num_speculative_tokens\":7,\"draft_sample_method\":\"greedy\"}'",
+    "sglang": "sglang serve --trust-remote-code --model-path deepseek-ai/DeepSeek-V4-Flash-0731 --tp 4 --moe-runner-backend flashinfer_mxfp4 --speculative-algorithm DSPARK --mem-fraction-static 0.90 --chunked-prefill-size 4096"
+  },
+  "features": [
+    "Text Generation", "Conversational", "Agentic Capabilities",
+    "Speculative Decoding", "1M Token Context", "Sovereign (self-hosted)",
+    "SafeTensors"
+  ],
+  "arxiv": "arXiv:2606.19348",
+  "sovereign_guarantees": {
+    "no_mandatory_telemetry": true,
+    "air_gap_capable": true,
+    "local_weights": true,
+    "private_finetunes": true
+  }
+}

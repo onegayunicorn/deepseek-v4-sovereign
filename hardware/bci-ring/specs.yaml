@@ -1,0 +1,164 @@
+# SOVEREIGN BCI Ring — Hardware & Firmware Specification
+# Brand palette: bg #0A0A10 · cyan #00E5FF · mint #00FFCC
+# Version 1.0 — reference spec for the neural ring wearable.
+
+brand:
+  name: SOVEREIGN
+  product: BCI Ring
+  palette:
+    background: "#0A0A10"
+    accent_cyan: "#00E5FF"
+    accent_mint: "#00FFCC"
+  revision: "1.0"
+
+form_factor:
+  type: ring
+  inner_diameter_mm: 22          # adjustable sizing inserts: 17–24 mm
+  outer_diameter_mm: 26
+  height_mm: 6.5
+  weight_g: 6.2
+  ingress_protection: IP67       # dust-tight, 1 m submersion 30 min
+  materials:
+    - grade_5_titanium           # structural body
+    - flexible_pcb_ring_core     # 12-layer flex PCB wrapped 360°
+    - medical_grade_silicone     # electrode carriers & seal
+
+mcu:
+  part: nRF52840                 # alternative: ESP32-S3 (see mcu_alternative)
+  core: Cortex-M4F @ 64 MHz
+  flash_kb: 1024
+  ram_kb: 256
+  radio: BLE 5.0                 # + IEEE 802.15.4 (unused in v1)
+  notes: >
+    nRF52840 selected for best-in-class BLE energy efficiency and ample
+    on-device DSP headroom. ESP32-S3 is the drop-in alternative when
+    Wi-Fi/OTA-over-IP is required.
+  mcu_alternative:
+    part: ESP32-S3
+    core: dual Xtensa LX7 @ 240 MHz
+    flash_kb: 8192 (QSPI)
+    ram_kb: 512
+
+sensors:
+  eeg:
+    part: ADS1299
+    interface: SPI              # 4-wire, 10 MHz, CS on P0.08
+    channels: 4                 # FP1, FP2, AF7, AF8 (bipolar refs)
+    adc_bits: 24
+    sample_rate_hz: 500
+    input_range_uv_pp: 4500
+    gain: 24
+    drdy_pin: P0.10             # data-ready interrupt
+    electrode_dc_bias: 0.5V     # right-leg drive (RLD) on board
+  ppg:
+    part: MAX30102
+    interface: I2C              # addr 0x57, bus shared with BMI270
+    leds: [IR 880nm, RED 660nm]
+    sample_rate_hz: 100         # per LED, averaged over 10 ms
+    adc_bits: 18
+    proximity_irq: P0.12
+  imu:
+    part: BMI270
+    interface: I2C              # addr 0x68, bus shared with MAX30102
+    accel_sample_rate_hz: 200
+    gyro_sample_rate_hz: 200
+    accel_range_g: 16
+    gyro_range_dps: 2000
+    int1_pin: P0.11             # data-ready interrupt
+
+interfaces:
+  ble:
+    spec: BLE 5.0
+    phy: 1M / 2M
+    tx_power_db: [0, 4]         # dynamic; default 0 dBm
+    connection_interval_ms: 7.5 # min supported by nRF52840
+    slave_latency: 0
+    supervision_timeout_ms: 4000
+    advertising: 100 ms interval, connectable, whitelist off (pairing on)
+    security: LE Secure Connections, Just-Works + MITM on pairing, bonding
+  charging:
+    qi_watts: 2.5               # Qi 1.2.4 BPP compatible
+    usb_c: true                 # USB-C 5 V / 500 mA charge passthrough
+    charge_termination: 4.2 V CC/CV
+  debug:
+    swd: true
+    uart_log: 115200 baud via USB-C accessory mode
+
+power:
+  battery:
+    chemistry: LiPo
+    capacity_mah: 80
+    nominal_v: 3.7
+    charge_cycles: 500+         # 80% capacity retention
+  power_budget:
+    total_avg_ma: 13.9             # sum of per-subsystem avg_ma below
+    items:
+    # Representative average current draw (mA) per subsystem at 3.7 V
+    - subsystem: MCU active (nRF52840, 64 MHz, DC-DC)
+      current_ma: 4.5
+      duty: 100
+      avg_ma: 4.5
+    - subsystem: ADS1299 (4ch @ 500 SPS, continuous)
+      current_ma: 4.0
+      duty: 100
+      avg_ma: 4.0
+    - subsystem: MAX30102 (100 SPS, 1.6 mA LED pulse duty)
+      current_ma: 1.8
+      duty: 100
+      avg_ma: 1.8
+    - subsystem: BMI270 (accel+gyro @ 200 Hz, low-power mode)
+      current_ma: 0.9
+      duty: 100
+      avg_ma: 0.9
+    - subsystem: BLE radio (TX/RX, 7.5 ms interval, avg over duty)
+      current_ma: 6.0
+      duty: 15
+      avg_ma: 0.9
+    - subsystem: DSP + feature extraction (Cortex-M4F SIMD)
+      current_ma: 5.0
+      duty: 20
+      avg_ma: 1.0
+    - subsystem: regulators & leakage (incl. Qi receive standby)
+      current_ma: 0.8
+      duty: 100
+      avg_ma: 0.8
+  runtime_estimate_h:
+    streaming_full: 5.8         # 80 mAh / 13.9 mA ≈ 5.8 h worst case
+    streaming_power_optimized: 8.2   # EEG at 250 SPS + IMU accel-only
+    standby_ble_connected: 96
+    deep_sleep: 720             # 30 days; wake on IMU motion / touch
+  charging_time_min: 45         # Qi 2.5 W, 80 mAh
+
+performance:
+  latency:
+    sensor_to_ble_target_ms: 20   # budget 18.5 ms, target < 20 ms
+    stages:
+    # End-to-end latency from physical sample to BLE notification on air.
+    - stage: sensor acquisition (500 SPS -> 2 ms sample block)
+      ms: 2.0
+    - stage: on-device DSP + feature pack (4ch Welch PSD)
+      ms: 8.0
+    - stage: protocol packing + CRC
+      ms: 1.0
+    - stage: BLE notify (7.5 ms connection interval, first slot)
+      ms: 7.5
+  streaming_rates:
+    eeg_hz: 500                  # feature packets: 20 Hz (25-sample blocks)
+    ppg_hz: 100                  # packet rate: 20 Hz (5-sample blocks)
+    imu_hz: 200                  # packet rate: 25 Hz (8-sample blocks)
+
+firmware:
+  language: C (C11), Zephyr RTOS or Arduino-compatible HAL
+  main_source: firmware/main.c
+  build_targets: [nrf52840dk_nrf52840, esp32s3_devkitc]
+  features:
+    - ads1299_init: SPI config, 4-ch sampling, RLD enable, DRDY ISR
+    - max30102_init: I2C config, LED current, FIFO polling
+    - bmi270_init: I2C config, accel+gyro, step counter off
+    - ble_gatt: advertising, notify on 6 characteristics
+    - power_mgmt: DC-DC, sleep between sample blocks, motion wake
+    - ota: DFU over BLE (Zephyr MCUboot, slot A/B)
+
+certification:
+  regulatory: [FCC Part 15, CE RED, TELEC (Japan)]
+  body_safety: IEC 60601-1 (patient-contact surfaces), skin-contact material ISO 10993-5/10

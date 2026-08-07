@@ -1,0 +1,8 @@
+# Routine: health monitor
+id: health-monitor
+description: Continuous health + compliance sweep
+steps:
+  - { task: audit, payload: { scope: [orchestrator, hardware, memory] } }
+  - { action: supervisor.health }
+  - { action: webhook.notify, payload: { topic: health, source: generic } }
+trigger: cron/hourly-health-audit

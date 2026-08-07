@@ -1,0 +1,12 @@
+# Job: model-finetune
+id: model-finetune
+kind: train
+description: Fine-tune the sovereign model on a private corpus (HF Jobs / local)
+params:
+  base_model: deepseek-ai/DeepSeek-V4-Flash-0731
+  dataset: data/knowledge/documents
+  method: lora
+  epochs: { default: 1, min: 1, max: 10 }
+  gpu: { default: 4, min: 1, max: 16 }
+output: models/deepseek-v4-sovereign/fine-tuned
+integration: huggingface (run_huggingface_job)

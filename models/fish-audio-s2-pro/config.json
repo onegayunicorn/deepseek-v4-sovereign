@@ -1,0 +1,21 @@
+{
+  "model_id": "fishaudio/s2-pro",
+  "task": "text-to-speech",
+  "params": "5B",
+  "sample_rate": 44100,
+  "channels": 1,
+  "multi_speaker": true,
+  "prosody_control": true,
+  "streaming": true,
+  "license": "See model card",
+  "repo_files": [
+    "chat_template.jinja",
+    "codec.pth",
+    "config.json",
+    "model-00001-of-00002.safetensors",
+    "model-00002-of-00002.safetensors",
+    "model.safetensors.index.json",
+    "tokenizer.json",
+    "tokenizer_config.json"
+  ]
+}

@@ -1,0 +1,31 @@
+# SOVEREIGN — core orchestrator agents
+id: sovereign-core
+kind: group
+description: The seven built-in orchestrator agent kinds.
+agents:
+  - id: chat
+    kind: deepseek.chat
+    model: deepseek-v4-sovereign
+    description: General conversation & planning
+  - id: reasoner
+    kind: deepseek.reasoner
+    model: deepseek-v4-reasoner
+    reasoning_effort: high
+    description: Step-by-step reasoning tasks
+  - id: coder
+    kind: deepseek.coder
+    model: deepseek-v4-coder
+    description: Code generation & repair
+  - id: tool
+    kind: tool
+    allowed_tools: [shell, web_search, file_ops, api_client, code_interpreter, database]
+    description: Policy-gated tool execution
+  - id: coordinator
+    kind: coordinator
+    description: Decomposes goals into subtask plans
+  - id: memory
+    kind: memory
+    description: Memory store / retrieve / search / prune
+  - id: supervisor
+    kind: supervisor
+    description: Health monitoring & restart of agents

@@ -1,0 +1,8 @@
+# Action: backup.snapshot
+id: backup.snapshot
+description: Snapshot state + artifacts to the sovereign bucket
+inputs:
+  scope: { type: enum, values: [state, memory, artifacts, all], default: all }
+  bucket: { type: string, default: sovereign-artifacts }
+permission: backup:create
+implemented_by: buckets/bucket_bootstrap.py + scripts/backup.sh

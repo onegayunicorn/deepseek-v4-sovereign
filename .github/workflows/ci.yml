@@ -1,0 +1,30 @@
+name: CI
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Install deps
+        run: pip install -r requirements.txt pytest
+      - name: Syntax check
+        run: |
+          find src -name "*.py" | xargs -I{} python3 -c "import ast; ast.parse(open('{}').read())"
+      - name: Unit tests
+        run: python -m pytest tests/unit -v --tb=short
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: frontend } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm ci || npm install
+      - run: npm run build

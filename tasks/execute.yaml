@@ -1,0 +1,9 @@
+# Task type: execute
+id: execute
+description: Execute a tool/action (shell, file ops, api client, code interpreter)
+agent: tool
+payload_schema:
+  tool: { type: string, required: true }
+  arguments: { type: object }
+defaults: { priority: 7, max_retries: 1 }
+policy: tools.yaml

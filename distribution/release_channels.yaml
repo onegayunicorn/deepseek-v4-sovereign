@@ -1,0 +1,106 @@
+# release_channels.yaml — SOVEREIGN distribution channels
+#
+# Each channel defines how a release artifact is published. The
+# `command` templates contain `{VERSION}` placeholders that
+# distribution/release_pipeline.sh substitutes at release time.
+# Commands are echoed (dry-run style) by the pipeline; credentials are
+# injected via environment variables, never committed.
+
+channels:
+  github-releases:
+    name: GitHub Releases
+    target: github.com/sovereign-ai/sovereign/releases
+    command: |
+      gh release create v{VERSION} \
+        --title "Sovereign v{VERSION}" \
+        --notes-file CHANGELOG.md \
+        builds/apk/app/build/outputs/apk/release/app-release.apk \
+        builds/exe/dist/sovereign.exe \
+        distribution/checksums/sha256sums-v{VERSION}.txt
+    prerequisites:
+      - gh CLI installed and authenticated (gh auth login)
+      - CHANGELOG.md at repo root
+      - Built APK + EXE artifacts present
+    notes: Primary channel — hosts signed binaries and the sha256 checksums file.
+
+  huggingface-spaces:
+    name: Hugging Face Spaces (Docker)
+    target: huggingface.co/spaces/sovereign-ai/orchestrator
+    command: |
+      huggingface-cli login
+      huggingface-cli upload sovereign-ai/orchestrator \
+        docker/space-app --repo-type space
+    prerequisites:
+      - huggingface_hub CLI (pip install -U huggingface_hub)
+      - HF token with write access to the space
+    notes: Public demo Space serving the orchestrator dashboard; push the
+      docker/ space app after the docker image is published.
+
+  apk-direct:
+    name: APK Direct Download
+    target: https://downloads.sovereign.ai/apk/v{VERSION}/sovereign-v{VERSION}.apk
+    command: |
+      aws s3 cp builds/apk/app/build/outputs/apk/release/app-release.apk \
+        s3://sovereign-dist/apk/v{VERSION}/sovereign-v{VERSION}.apk --acl public-read
+      aws s3 cp distribution/checksums/sha256sums-v{VERSION}.txt \
+        s3://sovereign-dist/apk/v{VERSION}/sha256sums.txt --acl public-read
+    prerequisites:
+      - AWS CLI configured with credentials for the sovereign-dist bucket
+      - Release APK signed (apksigner) before upload
+    notes: Direct sideload URLs; always publish checksums alongside the APK.
+
+  winget:
+    name: Windows Package Manager (winget)
+    target: github.com/microsoft/winget-pkgs (manifest submit)
+    command: |
+      wingetcreate update Sovereign.Sovereign --version {VERSION} \
+        --urls "https://downloads.sovereign.ai/exe/v{VERSION}/sovereign-{VERSION}.exe"
+      wingetcreate submit Sovereign.Sovereign
+    prerequisites:
+      - wingetcreate installed (winget install Microsoft.WingetCreate)
+      - GitHub account with a fork of microsoft/winget-pkgs
+      - Signed EXE with a stable download URL
+    notes: Manifest lands under manifests/s/Sovereign/…; use a stable URL so
+      winget-pkgs review passes.
+
+  chocolatey:
+    name: Chocolatey Community Repository
+    target: community.chocolatey.org/packages/sovereign
+    command: |
+      choco pack packaging/choco/sovereign.nuspec --version {VERSION}
+      choco apikey --key "$CHOCO_API_KEY" --source https://push.chocolatey.org/
+      choco push sovereign.{VERSION}.nupkg --source https://push.chocolatey.org/
+    prerequisites:
+      - choco CLI on a Windows build host
+      - CHOCO_API_KEY env var (community repo key)
+      - packaging/choco/sovereign.nuspec + chocolateyinstall.ps1
+    notes: nuspec must reference the signed EXE URL; auto-uninstall script
+      recommended.
+
+  npm:
+    name: npm registry
+    target: registry.npmjs.org/@sovereign-ai/orchestrator
+    command: |
+      cd frontend
+      npm version {VERSION}
+      npm publish --access public
+    prerequisites:
+      - Node.js 18+, npm login (or NODE_AUTH_TOKEN)
+      - frontend/package.json with scope @sovereign-ai
+    notes: Publishes the dashboard frontend package; tag the git commit and
+      include the tarball in the GitHub release.
+
+  docker-hub:
+    name: Docker Hub
+    target: hub.docker.com/r/sovereignai/orchestrator
+    command: |
+      docker buildx build --platform linux/amd64,linux/arm64 \
+        -t sovereignai/orchestrator:{VERSION} \
+        -t sovereignai/orchestrator:latest \
+        --push ./docker
+    prerequisites:
+      - Docker with buildx plugin enabled
+      - docker login to hub.docker.com
+      - docker/Dockerfile building the FastAPI orchestrator image
+    notes: Multi-arch (amd64 + arm64) images; also bump the HF Space after
+      publishing.

@@ -1,0 +1,57 @@
+# ── Python ─────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.spec.bak
+
+# ── Runtime data ───────────────────────────────────────────────────────
+data/state/*.sqlite
+data/state/*.sqlite-*
+data/memory/vectors/*
+logs/audits/*.jsonl
+logs/executions/*.log
+logs/system/*.log
+!.gitkeep
+
+# ── Secrets / env ──────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+!*.example
+
+# ── Node / frontend ────────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/node_modules/
+*.log
+
+# ── Android / Gradle ───────────────────────────────────────────────────
+builds/apk/.gradle/
+builds/apk/build/
+builds/apk/app/build/
+builds/apk/local.properties
+*.apk
+*.aab
+
+# ── Windows / build artifacts ──────────────────────────────────────────
+builds/exe/dist/
+builds/exe/build/
+*.exe
+*.msi
+
+# ── OS / editor ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

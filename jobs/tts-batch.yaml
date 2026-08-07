@@ -1,0 +1,10 @@
+# Job: tts-batch
+id: tts-batch
+kind: tts
+description: Batch text-to-speech synthesis (Fish Audio S2-Pro)
+params:
+  input: data/artifacts/intermediate/tts-batch.jsonl
+  voice: default
+  speed: 1.0
+output: data/artifacts/outputs/tts/
+model: models/fish-audio-s2-pro

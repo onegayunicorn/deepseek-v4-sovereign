@@ -1,0 +1,13 @@
+# Webhook trigger: GitHub push → scout + analyze the pushed repo
+id: github-push
+kind: webhook
+source: github
+event: push
+enabled: true
+task:
+  type: scout
+  payload:
+    repo: "{payload.repository.full_name}"
+    branch: "{payload.ref}"
+  priority: 6
+integration: ../onegayunicorn   # Expanded Intelligence scout agent

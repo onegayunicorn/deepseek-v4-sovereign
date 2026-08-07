@@ -1,0 +1,37 @@
+# SOVEREIGN — agents from connected OGU projects (see integrations/registry.yaml)
+id: connected-projects
+kind: group
+description: Every recent OGU project exposed as an agent capability.
+agents:
+  - id: qlb-core
+    integration: ../core
+    capabilities: [entanglement_manager, bloch_sphere, harmonic_resonance, pvd_engine]
+    description: Quantum Lineage Bridge core engine
+  - id: mocking-jay-udt
+    integration: ../mocking-jay
+    capabilities: [digital_twin, quantum_simulation, merkle_ledger]
+    description: Universal Digital Twin (33 agent-nodes)
+  - id: photonic-engine
+    integration: ../photonic-entanglement-engine
+    capabilities: [photonic_entanglement, hub]
+    description: Photonic entanglement subsystem
+  - id: dna-lab
+    integration: ../dna-unfolding-lab
+    capabilities: [dna_simulation, workflows]
+    description: DNA unfolding laboratory
+  - id: kaleidoscope
+    integration: ../kaleidoscope
+    capabilities: [intent_decoder, persona_generator, outcome_scoring]
+    description: Intent decoding + persona generation
+  - id: moodchroma
+    integration: ../moodchroma
+    capabilities: [biometric_pipeline, emotion_relay, proactive_alert]
+    description: Biometric emotion pipeline
+  - id: optogenetics
+    integration: ../optogenetics
+    capabilities: [oi_controller, photonic_entanglement, global_correction]
+    description: Optogenetic controller
+  - id: ogu-intelligence
+    integration: ../onegayunicorn
+    capabilities: [scout, intelligence, enhancer, auditor]
+    description: Expanded Intelligence (scout→enhance→audit loop)

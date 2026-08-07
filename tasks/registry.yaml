@@ -1,0 +1,12 @@
+# SOVEREIGN — task-type registry
+version: "1.0"
+task_types:
+  - { id: reason,      file: reason.yaml }
+  - { id: code,        file: code.yaml }
+  - { id: search,      file: search.yaml }
+  - { id: plan,        file: plan.yaml }
+  - { id: execute,     file: execute.yaml }
+  - { id: coordinate,  file: coordinate.yaml }
+  - { id: lineage-sync, file: lineage-sync.yaml }
+  - { id: scout,       file: scout.yaml }
+  - { id: audit,       file: audit.yaml }

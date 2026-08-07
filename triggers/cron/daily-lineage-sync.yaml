@@ -1,0 +1,14 @@
+# Daily lineage sync — runs the OGU lineage ETL against connected projects
+id: daily-lineage-sync
+kind: cron
+expression: "0 3 * * *"          # every day 03:00
+timezone: UTC
+enabled: true
+task:
+  type: lineage-sync
+  payload:
+    source: integrations/registry.yaml
+    pipelines: [ancestral_data_pipeline, lineage_etl, resonance_pipeline]
+    integrations: [../pipelines, ../core, ../photonic-entanglement-engine]
+  priority: 5
+  max_retries: 2

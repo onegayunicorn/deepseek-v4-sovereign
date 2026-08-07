@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOVEREIGN — Orchestrator Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0A0A10; --panel: rgba(16,18,28,0.85); --border: rgba(0,229,255,0.14);
+    --cyan: #00E5FF; --mint: #00FFCC; --text: #E0E0E0; --text2: #8892B0;
+    --ok: #00FF9D; --warn: #FFD166; --err: #FF5C7C;
+    --mono: 'JetBrains Mono', 'Consolas', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(0,229,255,0.05), transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(0,255,204,0.04), transparent 60%);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px; border-bottom: 1px solid var(--border);
+    background: rgba(10,10,16,0.8); position: sticky; top: 0; z-index: 5;
+  }
+  header h1 { font-size: 18px; letter-spacing: 2px; font-weight: 500; }
+  header h1 span { color: var(--cyan); }
+  .pill { font-family: var(--mono); font-size: 12px; padding: 4px 10px;
+    border: 1px solid var(--border); border-radius: 20px; color: var(--mint); }
+  main { padding: 24px 28px; max-width: 1200px; margin: 0 auto; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; backdrop-filter: blur(6px);
+  }
+  .card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text2); font-weight: 500; margin-bottom: 8px; }
+  .metric { font-family: var(--mono); font-size: 26px; color: var(--cyan); }
+  .metric small { font-size: 12px; color: var(--text2); }
+  .row { display: flex; justify-content: space-between; padding: 5px 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.06); font-family: var(--mono); font-size: 13px; }
+  .ok { color: var(--ok); } .warn { color: var(--warn); } .err { color: var(--err); }
+  #events { max-height: 320px; overflow-y: auto; font-family: var(--mono); font-size: 12px; }
+  #events div { padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); color: var(--text2); }
+  #events b { color: var(--cyan); font-weight: 500; }
+  .chart-wrap { position: relative; height: 220px; margin-top: 8px; }
+  footer { text-align: center; color: var(--text2); font-size: 12px; padding: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>◈ SOVEREIGN <span>ORCHESTRATOR</span></h1>
+  <div><span class="pill" id="mode">connecting…</span></div>
+</header>
+<main>
+  <section class="grid">
+    <div class="card"><h3>Status</h3><div class="metric" id="status">—</div><div id="uptime" style="font-size:12px;color:var(--text2)"></div></div>
+    <div class="card"><h3>Tasks</h3><div class="metric" id="tasks">—</div><small>submitted</small></div>
+    <div class="card"><h3>Active</h3><div class="metric" id="active">—</div><small>running now</small></div>
+    <div class="card"><h3>Agents</h3><div class="metric" id="agents">—</div><small>spawned</small></div>
+  </section>
+
+  <section class="grid" style="margin-top:14px">
+    <div class="card" style="grid-column: span 2">
+      <h3>Connected projects</h3>
+      <div id="projects"><div class="row"><span>scanning…</span></div></div>
+    </div>
+    <div class="card">
+      <h3>Throughput</h3>
+      <div class="chart-wrap"><canvas id="chart"></canvas></div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:14px">
+    <h3>Event stream (ws://…/ws/events)</h3>
+    <div id="events"><div>connecting to event bus…</div></div>
+  </section>
+</main>
+<footer>SOVEREIGN — own your intelligence · #0A0A10 / #00E5FF / #00FFCC</footer>
+
+<script>
+const API = location.origin || 'http://localhost:8000';
+const $ = (id) => document.getElementById(id);
+const chart = new Chart($('chart'), {
+  type: 'line',
+  data: { labels: [], datasets: [{ label: 'active tasks', data: [],
+    borderColor: '#00E5FF', backgroundColor: 'rgba(0,229,255,0.08)', fill: true, tension: 0.35 }] },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8892B0' } } },
+    scales: { x: { ticks: { color: '#8892B0' } }, y: { ticks: { color: '#8892B0' } } } }
+});
+
+async function refresh() {
+  try {
+    const h = await fetch(`${API}/health`).then(r => r.json());
+    $('status').textContent = h.status.toUpperCase();
+    $('status').className = 'metric ' + (h.status === 'ok' ? 'ok' : 'err');
+    $('tasks').textContent = h.tasks ?? 0;
+    $('active').textContent = h.active_tasks ?? 0;
+    $('agents').textContent = h.agents ?? 0;
+    $('uptime').textContent = `uptime ${Math.round((h.uptime_seconds ?? 0)/60)} min`;
+    chart.data.labels.push(new Date().toLocaleTimeString());
+    chart.data.datasets[0].data.push(h.active_tasks ?? 0);
+    if (chart.data.labels.length > 30) { chart.data.labels.shift(); chart.data.datasets[0].data.shift(); }
+    chart.update();
+  } catch { $('status').textContent = 'OFFLINE'; $('status').className = 'metric err'; }
+}
+
+async function loadProjects() {
+  try {
+    const res = await fetch(`${API}/api/v1/integrations`).catch(() => null);
+    if (!res) { $('projects').innerHTML = '<div class="row"><span>integration endpoint optional</span></div>'; return; }
+    const data = await res.json();
+    $('projects').innerHTML = data.projects.map(p =>
+      `<div class="row"><span>${p.id}</span><span class="${p.connected ? 'ok' : 'err'}">${p.connected ? 'connected' : 'missing'}</span></div>`).join('');
+  } catch { /* fallback below */ }
+}
+
+// Event stream via WebSocket (falls back to polling silently)
+try {
+  const ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws/events');
+  ws.onmessage = (m) => {
+    const e = JSON.parse(m.data);
+    const div = document.createElement('div');
+    div.innerHTML = `<b>${e.type || e.event_type || 'event'}</b> ${JSON.stringify(e.payload || e.details || '')}`;
+    $('events').prepend(div);
+    while ($('events').children.length > 60) $('events').lastChild.remove();
+  };
+  ws.onerror = () => { $('events').innerHTML = '<div>websocket unavailable — polling mode</div>'; };
+} catch { /* noop */ }
+
+$('mode').textContent = 'LIVE';
+refresh(); loadProjects();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Operation: deploy
+id: deploy
+description: Deploy the orchestrator (docker / k8s / local)
+script: scripts/deploy.sh
+options: [local, docker, kubernetes]
+refs: [docker/docker-compose.yml, kubernetes/deployment.yaml]

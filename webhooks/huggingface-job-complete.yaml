@@ -1,0 +1,9 @@
+# Webhook: huggingface-job-complete
+id: hf-job-complete
+source: huggingface
+events: [job.completed, job.failed]
+endpoint: POST /api/v1/webhooks/huggingface
+handler: record job result → memory; notify on failure
+payload_map:
+  job_id: payload.job.id
+  status: payload.job.status

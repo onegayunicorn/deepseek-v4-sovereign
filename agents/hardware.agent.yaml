@@ -1,0 +1,22 @@
+# SOVEREIGN — hardware agents (BCI ring + earbuds)
+id: hardware
+kind: group
+description: Agents bridging the Sovereign Ring (BCI) and Sovereign Buds into the orchestrator.
+agents:
+  - id: ring-sensor
+    kind: hardware
+    device: bci-ring
+    adapter: hardware/bci-ring/driver_adapter.py
+    capabilities: [eeg, ppg, imu, ble]
+    description: Streams neural + physiological telemetry from the Sovereign Ring
+  - id: buds-audio
+    kind: hardware
+    device: earbuds
+    adapter: hardware/earbuds/driver_adapter.py
+    capabilities: [audio, voice, biometrics, ble]
+    description: Voice capture + biometrics from the Sovereign Buds
+  - id: sensor-fusion
+    kind: tool
+    capabilities: [eeg_processor, rppg_sensor, thermal_sensor, vocal_analyzer]
+    integration: ../sensors
+    description: Fuses sensor data via the connected OGU sensor stack

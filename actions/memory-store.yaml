@@ -1,0 +1,9 @@
+# Action: memory.store
+id: memory.store
+description: Store a value into the selected memory type
+inputs:
+  memory_type: { type: enum, values: [working, episodic, semantic, procedural, vector] }
+  key: { type: string, required: true }
+  value: { type: any, required: true }
+permission: memory:write
+implemented_by: src/sovereign/agents/memory_agent.py

@@ -1,0 +1,23 @@
+{
+  "model_id": "deepseek-ai/DeepSeek-V4-Flash-0731",
+  "display_name": "DeepSeek-V4-Flash-0731",
+  "author": "deepseek-ai",
+  "license": "MIT",
+  "model_size_params": "304B",
+  "precision_supported": ["BF16", "F16", "F32", "F8", "E4M3", "E2M1", "INT8"],
+  "features": [
+    "Text Generation",
+    "Conversational",
+    "Agentic Capabilities",
+    "Speculative Decoding",
+    "SafeTensors"
+  ],
+  "arxiv": "arXiv:2606.19348",
+  "downloads_last_month": 617900,
+  "likes": 2640,
+  "followers": 141000,
+  "inference_providers": ["Novita", "Together AI", "DeepInfra", "Fireworks", "Baseten"],
+  "hf_router_endpoint": "https://router.huggingface.co/v1",
+  "hf_model_tree": {"fine_tunes": 14, "quantizations": 90},
+  "spaces_using_model": 9
+}

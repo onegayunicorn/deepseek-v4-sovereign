@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application display name (brand: SOVEREIGN). -->
+    <string name="app_name">Sovereign</string>
+
+    <!-- Dashboard URL loaded by MainActivity. Point at staging or
+         production per environment without touching code. -->
+    <string name="dashboard_url">https://orchestrator.sovereign.ai</string>
+
+    <!-- Shown when the dashboard fails to load. -->
+    <string name="dashboard_load_error">Unable to reach the Sovereign dashboard</string>
+</resources>

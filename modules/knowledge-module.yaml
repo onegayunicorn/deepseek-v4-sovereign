@@ -1,0 +1,10 @@
+# Module: knowledge
+id: knowledge
+description: Knowledge base, graph, document ingestion, RAG retrieval
+enabled: true
+components: [knowledge_base, graph, documents, embeddings, indexing, query]
+config_ref: config/memory.yaml (retrieval section)
+entrypoints:
+  - src/sovereign/knowledge/knowledge_base.py
+  - src/sovereign/knowledge/query.py
+dependencies: [networkx (optional)]

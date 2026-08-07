@@ -1,0 +1,11 @@
+# Routine: scout → enhance → audit (Expanded Intelligence loop)
+id: scout-enhance-audit
+description: Autonomous GitHub enhancement loop
+steps:
+  - { task: scout,     payload: { repo: "{repo}" } }
+  - { task: reason,    payload: { input: "analyze scouted repo" } }
+  - { task: code,      payload: { input: "produce enhancements" } }
+  - { task: execute,   payload: { tool: api_client, arguments: { url: "{pr_url}" } } }
+  - { task: audit,     payload: { scope: [static, deps, secrets] } }
+integration: ../onegayunicorn
+trigger: webhook/github-push

@@ -1,0 +1,9 @@
+# Routine: lineage sync across connected OGU projects
+id: lineage-sync
+description: Synchronize lineage data through the OGU pipelines
+steps:
+  - { task: lineage-sync, payload: { pipelines: [ancestral_data_pipeline, lineage_etl, resonance_pipeline] } }
+  - { task: reason, payload: { input: "summarize lineage delta" } }
+  - { task: memory.store, payload: { memory_type: episodic, key: "{ts}" } }
+integration: [../pipelines, ../core, ../photonic-entanglement-engine]
+trigger: cron/daily-lineage-sync

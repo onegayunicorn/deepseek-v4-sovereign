@@ -1,0 +1,78 @@
+# config/models.yaml
+# SOVEREIGN — model definitions & routing
+models:
+  sovereign:                    # NEW sovereign AI model (derived from DeepSeek-V4-Flash-0731)
+    provider: "deepseek"
+    name: "deepseek-v4-sovereign"
+    version: "v4.0"
+    base: "deepseek-ai/DeepSeek-V4-Flash-0731"
+    path: "./models/deepseek-v4-sovereign"
+    license: "MIT"
+    config:
+      context_window: 1048576   # 1M token context
+      max_tokens: 384000
+      temperature: 1.0
+      top_p: 0.95
+      reasoning_effort: "max"   # low | high | max
+      speculative_decoding: "dspark"
+      quantization: "q4_0"
+
+  chat:
+    provider: "deepseek"
+    name: "deepseek-v4-chat"
+    version: "v4.0"
+    path: "./models/deepseek-v4-sovereign"
+    config:
+      context_window: 32768
+      max_tokens: 4096
+      temperature: 0.7
+      top_p: 0.9
+      quantization: "q4_0"
+
+  reasoner:
+    provider: "deepseek"
+    name: "deepseek-v4-reasoner"
+    version: "v4.0"
+    path: "./models/deepseek-v4-sovereign"
+    config:
+      context_window: 32768
+      max_tokens: 8192
+      temperature: 0.3
+      top_p: 0.95
+      reasoning_effort: "high"
+      quantization: "q4_1"
+
+  coder:
+    provider: "deepseek"
+    name: "deepseek-v4-coder"
+    version: "v4.0"
+    path: "./models/deepseek-v4-sovereign"
+    config:
+      context_window: 32768
+      max_tokens: 8192
+      temperature: 0.5
+      top_p: 0.9
+      quantization: "q5_0"
+
+  tts:
+    provider: "fishaudio"
+    name: "fishaudio/s2-pro"
+    version: "s2-pro"
+    path: "./models/fish-audio-s2-pro"
+    task: "text-to-speech"
+    config:
+      sample_rate: 44100
+      speakers: 1
+      prosody_control: true
+
+routing:
+  default: "sovereign"
+  reasoning_tasks: "reasoner"
+  coding_tasks: "coder"
+  coordinator_tasks: "sovereign"
+  tts_tasks: "tts"
+
+fallback:
+  enabled: true
+  model: "deepseek-v4-sovereign"
+  degradation_tolerance: 0.7

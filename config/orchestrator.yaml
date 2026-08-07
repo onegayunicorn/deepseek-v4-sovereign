@@ -1,0 +1,45 @@
+# config/orchestrator.yaml
+# SOVEREIGN — core orchestrator settings
+orchestrator:
+  name: "SOVEREIGN — DeepSeek-V4 Sovereign Orchestrator"
+  version: "1.0.0"
+  mode: "production"            # development | staging | production
+  brand:
+    name: "SOVEREIGN"
+    palette: { background: "#0A0A10", cyan: "#00E5FF", mint: "#00FFCC" }
+
+runtime:
+  max_concurrent_tasks: 100
+  task_timeout_seconds: 3600
+  retry_attempts: 3
+  retry_delay_seconds: 5
+
+resources:
+  max_memory_gb: 32
+  max_cpu_cores: 16
+  max_gpu_devices: 4
+
+health_check:
+  interval_seconds: 30
+  timeout_seconds: 10
+
+graceful_shutdown_timeout_seconds: 60
+
+agent_lifecycle:
+  max_agent_lifetime_hours: 24
+  idle_shutdown_minutes: 15
+  state_persistence_interval_seconds: 30
+
+task_queue:
+  backend: "sqlite"             # redis | sqlite | rabbitmq
+  concurrency: 10
+  visibility_timeout_seconds: 120
+  max_retries: 3
+
+workflow:
+  max_dag_depth: 16
+  default_timeout_seconds: 7200
+
+integration:
+  registry: "integrations/registry.yaml"
+  scan_siblings: true           # discover connected OGU projects at ../*

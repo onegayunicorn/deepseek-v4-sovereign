@@ -1,0 +1,30 @@
+# config/network.yaml
+# SOVEREIGN — API endpoints & ports
+network:
+  api:
+    host: "0.0.0.0"
+    port: 8000
+    workers: 4
+    cors_origins: ["*"]
+
+  websocket:
+    enabled: true
+    path: "/ws/events"
+
+  endpoints:
+    - { path: "/api/v1/agents", method: "GET|POST", desc: "Agent lifecycle" }
+    - { path: "/api/v1/tasks", method: "GET|POST|DELETE", desc: "Task submission / status" }
+    - { path: "/api/v1/memory", method: "GET|POST", desc: "Memory search & CRUD" }
+    - { path: "/api/v1/system", method: "GET", desc: "Health, metrics, logs" }
+    - { path: "/api/v1/tools", method: "GET|POST", desc: "Tool registry & execution" }
+    - { path: "/api/v1/knowledge", method: "GET|POST", desc: "Knowledge base & graph" }
+    - { path: "/api/v1/governance", method: "GET", desc: "Policies, audit, compliance" }
+    - { path: "/api/v1/jobs", method: "GET|POST", desc: "Long-running jobs" }
+    - { path: "/api/v1/webhooks", method: "GET|POST", desc: "Webhook receivers" }
+    - { path: "/api/v1/hardware", method: "GET|POST", desc: "BCI ring + earbuds telemetry" }
+    - { path: "/api/v1/integrations", method: "GET", desc: "Connected projects" }
+    - { path: "/health", method: "GET", desc: "Liveness probe" }
+
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 300

@@ -1,0 +1,9 @@
+# Task type: search
+id: search
+description: Web / knowledge-base search via the tool agent
+agent: tool
+tool: web_search
+payload_schema:
+  query: { type: string, required: true }
+  max_results: { type: integer, default: 10 }
+defaults: { priority: 4, max_retries: 2 }

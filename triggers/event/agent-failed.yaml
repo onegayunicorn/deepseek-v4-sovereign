@@ -1,0 +1,11 @@
+# Event trigger: on agent failure, supervisor restarts + audit alert
+id: agent-failed-hook
+kind: event
+event: agent.state_changed
+filter: { state: failed }
+enabled: true
+actions:
+  - action: agent.restart
+    max_attempts: 2
+  - action: audit.log
+    event_type: agent.auto_restart

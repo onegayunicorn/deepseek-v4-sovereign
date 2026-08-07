@@ -1,0 +1,25 @@
+# SOVEREIGN — model registry
+# Local model cards + references. DeepSeek-V4-Flash-0731 is MIT; the
+# sovereign model is derived from it (same lineage, sovereign-tuned).
+version: "1.0"
+models:
+  - id: deepseek-v4-sovereign
+    file: deepseek-v4-sovereign/
+    type: llm
+    params: 304B (MoE)
+    license: MIT
+    status: sovereign-tuned
+  - id: deepseek-v4-flash-0731
+    file: deepseek-v4-flash-0731/
+    type: llm
+    params: 304B (MoE)
+    license: MIT
+    status: upstream-base
+  - id: fish-audio-s2-pro
+    file: fish-audio-s2-pro/
+    type: tts
+    params: 5B
+    license: see model card
+    status: upstream
+
+routing_ref: config/models.yaml

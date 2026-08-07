@@ -1,0 +1,12 @@
+# Task type: code
+id: code
+description: Generate or repair code; returns structured changes (path/content/message)
+agent: deepseek.coder
+model: deepseek-v4-coder
+routing: coding_tasks
+payload_schema:
+  input: { type: string, required: true }
+  language: { type: string }
+  repo: { type: string }
+defaults: { priority: 6, max_retries: 2 }
+output: { changes: [ { path, content, commit_message } ] }

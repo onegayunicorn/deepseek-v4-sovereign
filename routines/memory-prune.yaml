@@ -1,0 +1,8 @@
+# Routine: memory pruning
+id: memory-prune
+description: Enforce retention policies on memory stores
+steps:
+  - { action: memory.prune }
+  - { task: audit, payload: { scope: [retention] } }
+policy_ref: config/memory.yaml (pruning)
+interval: 24h

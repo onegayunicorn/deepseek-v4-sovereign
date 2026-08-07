@@ -1,0 +1,11 @@
+{
+  "tokenizer_class": "LlamaTokenizer",
+  "model_max_length": 1048576,
+  "padding_side": "right",
+  "truncation_side": "right",
+  "bos_token": "<｜begin▁of▁sentence｜>",
+  "eos_token": "<｜end▁of▁sentence｜>",
+  "pad_token": "<｜end▁of▁sentence｜>",
+  "unk_token": "<｜unk｜>",
+  "chat_template_note": "Use encoding_dsv4 (see models/deepseek-v4-flash-0731/docs) — no Jinja template ships with this release."
+}

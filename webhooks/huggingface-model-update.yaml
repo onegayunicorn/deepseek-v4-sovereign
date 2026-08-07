@@ -1,0 +1,10 @@
+# Webhook: huggingface-model-update
+id: hf-model-update
+source: huggingface
+events: [model.update, model.created]
+endpoint: POST /api/v1/webhooks/huggingface
+handler: re-index + benchmark (task model-benchmark)
+payload_map:
+  model_id: payload.repo.name
+  revision: payload.repo.revision
+integration: models/registry.yaml

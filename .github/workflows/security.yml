@@ -1,0 +1,21 @@
+name: Security
+on:
+  schedule: [{ cron: "0 4 * * 1" }]
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Secret scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ""
+          head: ""
+          extra_args: --only-verified
+      - name: Dependency audit
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt --format json || true

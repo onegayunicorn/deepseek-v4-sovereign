@@ -1,0 +1,9 @@
+# SOVEREIGN — operational procedure registry
+version: "1.0"
+operations:
+  - { id: backup,      file: backup.yaml }
+  - { id: restore,     file: restore.yaml }
+  - { id: healthcheck, file: healthcheck.yaml }
+  - { id: migrate,     file: migrate.yaml }
+  - { id: deploy,      file: deploy.yaml }
+  - { id: import-models, file: import-models.yaml }

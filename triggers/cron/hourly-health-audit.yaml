@@ -1,0 +1,12 @@
+# Hourly health audit — supervisor sweep + compliance snapshot
+id: hourly-health-audit
+kind: cron
+expression: "0 * * * *"
+timezone: UTC
+enabled: true
+task:
+  type: audit
+  payload:
+    scope: [orchestrator, hardware, memory, compliance]
+    report: data/artifacts/outputs/health-audit.json
+  priority: 3

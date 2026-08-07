@@ -1,0 +1,9 @@
+# Job: build-release
+id: build-release
+kind: build
+description: Full release build (apk + exe + containers)
+params:
+  version: "{VERSION}"
+  channels: [github-releases, huggingface-spaces, docker-hub]
+  sign: true
+script: distribution/release_pipeline.sh

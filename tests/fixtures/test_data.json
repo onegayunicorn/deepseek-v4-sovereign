@@ -1,0 +1,8 @@
+{
+  "fixture": "orchestrator",
+  "sample_tasks": [
+    { "type": "reason", "payload": { "input": "why does sovereignty matter" } },
+    { "type": "code", "payload": { "input": "add a healthcheck endpoint" } },
+    { "type": "search", "payload": { "query": "deepseek v4 benchmarks" } }
+  ]
+}

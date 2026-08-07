@@ -1,0 +1,14 @@
+# Module: security
+id: security
+description: Encryption, keyring, sandbox, JWT auth, RBAC/ABAC, audit
+enabled: true
+components: [encryption, keyring, sandbox, authentication, authorization, ssl, secrets]
+config_ref: config/security.yaml
+entrypoints:
+  - src/sovereign/security/encryption.py
+  - src/sovereign/security/authentication.py
+  - src/sovereign/governance/audit_logger.py
+hardening:
+  aes_gcm: true
+  tamper_evident_audit: true
+  secret_redaction: true

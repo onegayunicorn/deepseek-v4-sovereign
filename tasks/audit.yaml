@@ -1,0 +1,9 @@
+# Task type: audit — compliance + health sweep
+id: audit
+description: Run governance/compliance/health checks and write a report
+agent: supervisor
+payload_schema:
+  scope: { type: array, items: { type: string } }
+  report: { type: string }
+defaults: { priority: 3, max_retries: 1 }
+output: data/artifacts/outputs/audit-{ts}.json
