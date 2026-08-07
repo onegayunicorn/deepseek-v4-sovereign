@@ -10,7 +10,16 @@ this spec file). ``pathex`` points at ``src/`` so the ``sovereign`` package
 imports resolve to the monorepo source tree.
 """
 
+import os
+import sys
+
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+
+# Make the monorepo `src/` importable during spec evaluation so that
+# collect_submodules("sovereign") and the Analysis step resolve the package.
+_SRC = os.path.normpath(os.path.join(SPECPATH, "..", "..", "src"))
+if _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
 
 # Collect every submodule of the `sovereign` package so hidden imports
 # (plugins, optional deps) are bundled even when not statically imported.
@@ -34,8 +43,8 @@ hiddenimports += [
 datas = collect_data_files("sovereign")
 
 a = Analysis(
-    ["../../../src/sovereign/main.py"],
-    pathex=["../../../src"],
+    ["../../src/sovereign/main.py"],
+    pathex=["../../src"],
     binaries=[],
     datas=datas,
     hiddenimports=hiddenimports,
