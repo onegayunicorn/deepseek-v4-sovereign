@@ -1,3 +1,19 @@
+---
+license: mit
+language:
+  - en
+tags:
+  - deepseek
+  - moe
+  - sovereign
+  - text-generation
+  - agentic
+  - speculative-decoding
+pipeline_tag: text-generation
+base_model: deepseek-ai/DeepSeek-V4-Flash-0731
+inference: false
+---
+
 # 🌌 deepseek-v4-sovereign — the new sovereign AI model
 
 **SOVEREIGN's flagship model.** A sovereign-tuned derivative of
