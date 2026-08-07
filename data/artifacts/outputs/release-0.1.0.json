@@ -1,0 +1,27 @@
+{
+  "release": "v0.1.0",
+  "date": "2026-08-07T05:25:41.064297Z",
+  "version_bumped": "0.1.0",
+  "artifacts": {
+    "linux_binary": {
+      "path": "builds/exe/dist/sovereign",
+      "size_mb": 99,
+      "sha256": "29f973282df940820bba20972dce6bf856d92ab85b975ff4935941bbeb49161f"
+    },
+    "apk": {
+      "status": "skipped",
+      "reason": "Android toolchain (JDK17/Android SDK/Gradle) not present on this host \u2014 run builds/apk/build_apk.sh on a machine with the SDK"
+    },
+    "windows_exe": {
+      "status": "skipped",
+      "reason": "PyInstaller cannot cross-compile \u2014 run builds/exe/build_exe.ps1 on Windows 10+"
+    }
+  },
+  "checksums_file": "distribution/checksums/sha256sums-v0.1.0.txt",
+  "github_release": "https://github.com/onegayunicorn/deepseek-v4-sovereign/releases/tag/v0.1.0",
+  "channels": {
+    "github-releases": "PUBLISHED (release v0.1.0 with linux binary + checksums)",
+    "huggingface-spaces": "echoed (dry-run) \u2014 requires docker/space-app push"
+  },
+  "notes": "First 0.1.0 build. APK + Windows EXE require their native toolchains; Linux onefile binary attached to the release."
+}
