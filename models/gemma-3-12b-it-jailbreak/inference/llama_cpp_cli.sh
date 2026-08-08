@@ -4,7 +4,7 @@
 set -euo pipefail
 PROMPT="${1:-Hello — system initialized and verified.}"
 QUANT="${2:-Q4_K_M}"
-REPO="Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF"
+REPO="mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF"
 
 if ! command -v llama >/dev/null 2>&1; then
   echo "llama not found. Install: curl -LsSf https://llama.app/install.sh | sh" >&2

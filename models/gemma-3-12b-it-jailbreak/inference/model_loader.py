@@ -50,7 +50,7 @@ def load(quant: str = "Q4_K_M", backend: Optional[str] = None) -> LoadResult:
         return LoadResult(
             backend=backend,
             model_path=gguf,
-            command=f"llama serve -hf Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF:{quant}",
+            command=f"llama serve -hf mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF:{quant}",
             ok=True,
             message="llama.cpp selected (CPU-optimized)",
         )
@@ -58,7 +58,7 @@ def load(quant: str = "Q4_K_M", backend: Optional[str] = None) -> LoadResult:
         return LoadResult(
             backend=backend,
             model_path=None,
-            command=f"ollama run hf.co/Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF:{quant}",
+            command=f"ollama run hf.co/mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF:{quant}",
             ok=True,
             message="ollama selected",
         )
@@ -66,7 +66,7 @@ def load(quant: str = "Q4_K_M", backend: Optional[str] = None) -> LoadResult:
         return LoadResult(
             backend=backend,
             model_path=None,
-            command=f"docker model run hf.co/Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF:{quant}",
+            command=f"docker model run hf.co/mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF:{quant}",
             ok=True,
             message="docker selected",
         )

@@ -9,7 +9,7 @@ Target: AMD Ryzen Threadripper Zen 9 5000 · 8 GB RAM · 14 TFLOPS.
 
 ## Runtime knobs (llama.cpp)
 ```bash
-llama serve -hf Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF:Q4_K_M \
+llama serve -hf mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF:Q4_K_M \
   --ctx-size 2048 --threads auto --no-mmap
 ```
 - `--no-mmap`: avoids page-cache pressure on low-RAM systems (slower load, steadier runtime).

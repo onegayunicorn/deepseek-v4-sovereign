@@ -1,20 +1,14 @@
 # Model config — gemma-3-12b-it-jailbreak (GGUF)
 model:
   id: gemma-3-12b-it-jailbreak
-  repo_id: "Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF"
-  mirror_repo_id: "mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF"
-  params: 12B
-  architecture: gemma3
-  format: GGUF
-  context_length: 8192
-  license: gemma
-  language: english
-  vision: true
+  repo_id: "mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF"
+  source_repo_deleted: "Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF (deleted 2026-08-08 to free HF quota)"
   lineage:
     - google/gemma-3-12b-pt
     - google/gemma-3-12b-it
     - alexwirrell/gemma-3-12b-it-jailbreak-EN
-    - Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF
+    - Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF (deleted)
+    - mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF (mirror)
   type: uncensored-jailbreak
   use_cases:
     - red-teaming

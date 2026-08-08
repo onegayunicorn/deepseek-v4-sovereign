@@ -10,4 +10,4 @@ if ! command -v unsloth >/dev/null 2>&1; then
 fi
 
 unsloth studio -H 0.0.0.0 -p "${PORT}"
-echo "Open http://localhost:${PORT} → search: Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF"
+echo "Open http://localhost:${PORT} → search: mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF"

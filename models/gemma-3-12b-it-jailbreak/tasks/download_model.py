@@ -9,7 +9,7 @@ from huggingface_hub import snapshot_download
 
 def download_model(
     quant: str = "Q4_K_M",
-    model_id: str = "Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF",
+    model_id: str = "mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF",
     local_dir: str = None,
     force: bool = False
 ):

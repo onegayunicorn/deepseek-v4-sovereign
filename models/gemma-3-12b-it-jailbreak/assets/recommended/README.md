@@ -7,6 +7,6 @@ Runtime-downloaded weights — nothing is committed here (the Q4_K_M GGUF is
 # from the repo root
 python scripts/hf_download.py --quant Q4_K_M
 # or directly
-huggingface-cli download Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF \
+huggingface-cli download mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF \
   --include "*Q4_K_M.gguf" --local-dir models/gemma-3-12b-it-jailbreak/assets/recommended/
 ```

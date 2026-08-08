@@ -2,6 +2,7 @@
 """Migration helper: re-point module config from the HF source repo to the
 mirror (used if the source GGUF repo is deleted to free quota)."""
 
+import argparse
 import re
 import sys
 from pathlib import Path

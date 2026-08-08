@@ -16,7 +16,7 @@ bash models/gemma-3-12b-it-jailbreak/inference/llama_cpp_server.sh
 ## Container
 
 ```bash
-docker model run hf.co/Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF:Q4_K_M
+docker model run hf.co/mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF:Q4_K_M
 ```
 
 ## Security note

@@ -10,5 +10,5 @@ if ! command -v lemonade >/dev/null 2>&1; then
   exit 1
 fi
 
-lemonade pull "Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF:${QUANT}"
+lemonade pull "mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF:${QUANT}"
 lemonade run "${TAG}"

@@ -3,7 +3,7 @@
 Local module card for the quantized jailbreak/red-teaming variant of
 Gemma-3-12B, integrated into the Sovereign monorepo.
 
-- **Source (HF):** `Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF`
+- **Source (HF):** `Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF` — deleted 2026-08-08 to free HF quota; quants served via the mirror
 - **Mirror (static quants):** `mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF`
 - **Lineage:** google/gemma-3-12b-pt → google/gemma-3-12b-it →
   alexwirrell/gemma-3-12b-it-jailbreak-EN → this GGUF
@@ -28,11 +28,11 @@ blueprints/    lineage tree, fine-tuning chain, research scope, integration plan
 
 ```bash
 # download the recommended quant (runtime, ~7.3 GB)
-huggingface-cli download Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF \
+huggingface-cli download mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF \
   --include "*Q4_K_M.gguf" --local-dir models/gemma-3-12b-it-jailbreak/assets/recommended/
 
 # run via llama.cpp (fastest on CPU)
-llama serve -hf Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF:Q4_K_M
+llama serve -hf mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF:Q4_K_M
 ```
 
 ## Usage notes

@@ -9,4 +9,4 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-docker model run "hf.co/Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF:${QUANT}"
+docker model run "hf.co/mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF:${QUANT}"
