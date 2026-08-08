@@ -1,0 +1,24 @@
+# SOVEREIGN — PERO live-loop agent (closes the photonic feedback loop)
+id: pero-loop-agent
+kind: group
+description: Streams freezer-laser frames, tunes laser params toward target fidelity.
+triggers: [server.startup, pero.frame, manual]
+tasks: [pero-start, ingest-stream, tune-laser]
+tools: [opencv, numpy, scipy, local-llm, websocket]
+targets:
+  fidelity: 0.999423
+  efficiency: "> 0.62"
+  coherence: "> 0.78"
+policies:
+  max_power_mw: 350
+  min_temperature_c: -28
+  max_temperature_c: 5
+agents:
+  - id: ingest-worker
+    kind: tool
+    module: pero.live_ingest
+    description: Frame ingestion + SPDC metric computation
+  - id: tuning-worker
+    kind: tool
+    module: pero.tuning_agent
+    description: Model-recommended laser parameter adjustments

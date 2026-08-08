@@ -1,10 +1,15 @@
 package ai.sovereign.orchestrator
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
@@ -50,6 +55,61 @@ class MainActivity : AppCompatActivity() {
 
         // Load the configured dashboard URL (defaults to production).
         webView.loadUrl(getString(R.string.dashboard_url))
+
+        startCompanionIfPermitted()
+    }
+
+    // ── Free-roaming companion (bubble + widget) ────────────────────────
+    private fun startCompanionIfPermitted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 100)
+        }
+        if (!Settings.canDrawOverlays(this)) {
+            // Ask once at launch; the user can also grant via the menu.
+            Toast.makeText(this, R.string.overlay_hint, Toast.LENGTH_LONG).show()
+        } else {
+            startBubble()
+        }
+    }
+
+    private fun startBubble() {
+        val intent = Intent(this, BubbleService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
+        Toast.makeText(this, R.string.bubble_started, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun requestOverlay() {
+        val uri = Uri.parse("package:$packageName")
+        startActivity(
+            Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, uri)
+        )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_start_bubble -> {
+                startBubble(); true
+            }
+            R.id.action_request_overlay -> {
+                requestOverlay(); true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // If the user granted overlay permission via Settings, start now.
+        if (Settings.canDrawOverlays(this)) startBubble()
     }
 
     /** Tint the system chrome with the Sovereign dark palette. */

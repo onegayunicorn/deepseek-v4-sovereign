@@ -99,6 +99,30 @@ for router in (task.router, agent.router, memory.router, system.router,
                tools.router, knowledge.router, governance.router):
     app.include_router(router)
 
+# ── PERO live loop (optional: opencv not required — synthetic mode) ──────
+try:  # pragma: no cover - environment dependent
+    from pero.pero_routes import router as pero_router
+
+    app.include_router(pero_router)
+except Exception:  # noqa: BLE001
+    logger.info("PERO live-loop router unavailable (opencv/paths?) — skipped")
+
+# ── Pulse Lock — biometric admin gate (enable with PULSE_LOCK=1) ─────────
+PULSE_LOCK = None  # type: ignore[var-annotated]
+try:  # pragma: no cover - environment dependent
+    import os
+
+    from neural.bci_v95.interface import BCIInterface
+    from neural.bci_v95.pulse_lock import PulseLock
+    from neural.bci_v95.pulse_lock_routes import make_pulse_routes
+
+    _bci = BCIInterface()
+    PULSE_LOCK = PulseLock(_bci, enabled=os.environ.get("PULSE_LOCK", "0") == "1")
+    app.include_router(make_pulse_routes(PULSE_LOCK))
+    app.middleware("http")(PULSE_LOCK.middleware)
+except Exception:  # noqa: BLE001
+    logger.info("Pulse Lock unavailable — skipped")
+
 WS_MANAGER = EventStreamManager(ORCHESTRATOR.event_bus)
 
 
@@ -106,11 +130,15 @@ WS_MANAGER = EventStreamManager(ORCHESTRATOR.event_bus)
 async def _startup() -> None:
     await ORCHESTRATOR.start()
     asyncio.create_task(WS_MANAGER.run())
+    if PULSE_LOCK is not None:
+        await PULSE_LOCK.start()
 
 
 @app.on_event("shutdown")
 async def _shutdown() -> None:
     await ORCHESTRATOR.stop()
+    if PULSE_LOCK is not None:
+        await PULSE_LOCK.stop()
 
 
 @app.get("/")

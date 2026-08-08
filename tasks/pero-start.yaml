@@ -1,0 +1,11 @@
+# Task type: pero-start — start the PERO live photonic loop
+id: pero-start
+description: Start the freezer-laser live ingest + tuning loop
+agent: pero-loop-agent
+payload_schema:
+  source: { type: string }
+  crystal: { type: string, default: BBO }
+  target_fidelity: { type: number, default: 0.999423 }
+  fps: { type: integer, default: 10 }
+defaults: { priority: 4, max_retries: 2 }
+output: data/artifacts/outputs/pero-state-{ts}.json

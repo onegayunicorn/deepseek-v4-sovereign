@@ -1,78 +1,79 @@
-# Sovereign — Android APK Build
+# Sovereign — Android APK (free-roaming companion)
 
-Builds the SOVEREIGN orchestrator shell as an Android APK: a dark-themed
-WebView (`#0A0A10` background, `#00E5FF` cyan accent) that loads the
-Sovereign Orchestrator dashboard.
+Buildable Android app for your Samsung device: dashboard shell + **free-roaming
+AI companion** with a floating **bubble** (chat head) and a home-screen
+**widget**.
 
-## Prerequisites
+| Feature | File |
+| :--- | :--- |
+| Dashboard (WebView shell) | `app/src/main/java/ai/sovereign/orchestrator/MainActivity.kt` |
+| Bubble chat head (overlay service) | `app/src/main/java/ai/sovereign/orchestrator/BubbleService.kt` |
+| Roaming client (polls orchestrator) | `app/src/main/java/ai/sovereign/orchestrator/RoamingAgentClient.kt` |
+| Home-screen widget | `app/src/main/java/ai/sovereign/orchestrator/SovereignWidget.kt` |
 
-- **JDK 17** (Temurin/OpenJDK). Set `JAVA_HOME` or ensure `java` is on `PATH`.
-- **Android SDK** — set `ANDROID_HOME` (e.g. `/opt/android-sdk`). Gradle
-  downloads the required SDK components (platform 34, build-tools) on first
-  build.
-- **Gradle 8.2+** on `PATH`, or a generated Gradle wrapper (`gradle wrapper`
-  produces `./gradlew`). The build script falls back to the wrapper when
-  present, otherwise to system `gradle`.
+## What it does
+
+- **Bubble**: floating ◉ chat head over any app (SYSTEM_ALERT_WINDOW). Tap to
+  expand a chat panel — talk to your orchestrator, or read proactive messages
+  (fidelity drift, BCI lock, tuning-loop updates) that the companion surfaces
+  unprompted. The companion runs as a foreground service (persistent).
+- **Widget**: home-screen tile showing last-known fidelity / pairs / BCI,
+  tap to open the dashboard.
+- **Roaming loop**: polls the orchestrator every 15 s
+  (`/api/v1/pero/state`, `/api/v1/telemetry`), refreshes the widget, and
+  raises a notification when the system needs attention.
 
 ## Build
 
-```bash
-cd builds/apk
-
-# Debug APK (default)
-./build_apk.sh
-
-# Release APK
-RELEASE=1 ./build_apk.sh
-```
-
-Manual equivalent:
+Requires Android SDK (compileSdk 34, minSdk 26, Java 17).
 
 ```bash
 cd builds/apk
-./gradlew :app:assembleDebug      # or :app:assembleRelease
+./gradlew assembleDebug          # or assembleRelease (see signing below)
+# output: app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## Output
+CI: `.github/workflows/build-binaries.yml` builds and attaches the APK on
+every push/release.
 
-| Variant  | Path                                                    |
-|----------|---------------------------------------------------------|
-| Debug    | `app/build/outputs/apk/debug/app-debug.apk`             |
-| Release  | `app/build/outputs/apk/release/app-release.apk`         |
+### Signing
 
-## Signing
+Debug builds are auto-signed with the debug key (fine for sideloading on your
+own device). For release builds, configure a keystore:
 
-Debug builds are signed automatically with the debug keystore
-(`~/.android/debug.keystore`). Release builds are signed with the same debug
-key by default — **do not ship that**.
+```kotlin
+// app/build.gradle.kts
+signingConfigs {
+    create("release") {
+        storeFile = file("sovereign.jks")
+        storePassword = System.getenv("KS_PASS") ?: ""
+        keyAlias = System.getenv("KS_ALIAS") ?: "sovereign"
+        keyPassword = System.getenv("KS_PASS") ?: ""
+    }
+}
+buildTypes { release { signingConfig = signingConfigs.getByName("release") } }
+```
 
-Production signing:
+## Install on your Samsung
 
-1. Create a keystore:
+1. **Orchestrator backend on the phone** (no PC needed):
+   - Install [Termux](https://termux.com) from F-Droid
+   - `bash <(curl -s https://raw.githubusercontent.com/onegayunicorn/deepseek-v4-sovereign/main/scripts/install-termux.sh)`
+   - `sovereign dashboard` → API on `http://127.0.0.1:8000`
+   (Or run the orchestrator on any LAN machine and set the URL below.)
+2. **App**: copy `app-debug.apk` to the phone → allow "install unknown apps" →
+   open it. Grant **overlay permission** (menu → *Grant overlay permission*)
+   and **notifications** when prompted.
+3. **Pair**: menu → *Start bubble companion*. The bubble appears; the roaming
+   loop connects to `http://127.0.0.1:8000` (default). For a remote
+   orchestrator, set `sovereign_telemetry/orchestrator_url` in the app's
+   SharedPreferences (or change `RoamingAgentClient.DEFAULT_URL`).
+4. **Widget**: long-press home screen → Widgets → Sovereign → add.
 
-   ```bash
-   keytool -genkeypair -v -keystore sovereign-release.keystore \
-     -alias sovereign -keyalg RSA -keysize 2048 -validity 10000
-   ```
+## Permissions
 
-2. Wire `signingConfigs` in `app/build.gradle.kts`:
-
-   ```kotlin
-   signingConfigs {
-       create("release") {
-           storeFile = file("../sovereign-release.keystore")
-           storePassword = System.getenv("SOVEREIGN_STORE_PASSWORD")
-           keyAlias = "sovereign"
-           keyPassword = System.getenv("SOVEREIGN_KEY_PASSWORD")
-       }
-   }
-   ```
-
-3. Verify the signature with `apksigner` (Android SDK build-tools):
-
-   ```bash
-   $ANDROID_HOME/build-tools/34.0.0/apksigner verify --print-certs \
-     app/build/outputs/apk/release/app-release.apk
-   ```
-
-Keep the keystore and passwords out of version control.
+- `SYSTEM_ALERT_WINDOW` — floating bubble
+- `FOREGROUND_SERVICE` (+ `specialUse`) — persistent companion loop
+- `POST_NOTIFICATIONS` — proactive messages
+- `INTERNET` — orchestrator API
+- Bluetooth — Sovereign Ring/Buds pairing (unchanged)

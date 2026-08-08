@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bubble_panel"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#141C38"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bubble_title"
+            android:textColor="#E8ECF8"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bubble_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✕"
+            android:textColor="#F26D7A"
+            style="?android:attr/borderlessButtonStyle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bubble_log"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/bubble_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/bubble_hint"
+            android:textColor="#E8ECF8"
+            android:textColorHint="#6B76A0" />
+
+        <Button
+            android:id="@+id/bubble_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bubble_send" />
+    </LinearLayout>
+</LinearLayout>

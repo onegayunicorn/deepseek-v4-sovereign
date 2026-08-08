@@ -1,0 +1,11 @@
+# Event trigger: BCI signal lost → halt tasks
+id: bci-lost-hook
+kind: event
+event: bci.lost
+enabled: true
+task:
+  type: halt-on-signal-loss
+  payload:
+    reason: bci-signal-loss
+    notify: true
+  priority: 10

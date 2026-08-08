@@ -1,0 +1,29 @@
+# SOVEREIGN — build agent (cross-platform binary pipeline)
+id: build-agent
+kind: group
+description: Cross-platform binary builder (APK/EXE/IPA/DEB/WASM).
+triggers: [push.main, release.published, manual]
+tasks: [build-all]
+tools: [gradle, xcodebuild, pyinstaller, dpkg-deb, emscripten, gh, signtool]
+policies:
+  fail_fast: false
+  retry_attempts: 2
+  require_signing: true
+agents:
+  - id: apk-builder
+    kind: tool
+    build: builds/apk/build_apk.sh
+    description: Android APK build agent
+  - id: exe-builder
+    kind: tool
+    build: builds/exe/build_exe.ps1
+    description: Windows EXE build agent
+  - id: web-builder
+    kind: tool
+    build: scripts/build_web.sh
+    description: WASM/Pages build agent
+  - id: release-manager
+    kind: tool
+    pipeline: scripts/release.sh
+    channels: [github-releases, huggingface-spaces]
+    description: Releases across channels

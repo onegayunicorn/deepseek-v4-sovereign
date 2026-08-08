@@ -1,0 +1,9 @@
+# Task type: ingest-stream — stream frames from the laser feed
+id: ingest-stream
+description: Consume one PERO frame batch and compute SPDC metrics
+agent: pero-loop-agent
+payload_schema:
+  frames: { type: integer, default: 60 }
+  crystal: { type: string, default: BBO }
+defaults: { priority: 4, max_retries: 3 }
+output: data/artifacts/outputs/ingest-{ts}.json

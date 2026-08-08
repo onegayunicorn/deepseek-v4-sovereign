@@ -59,3 +59,26 @@ clean: ## Clean build artifacts
 	rm -rf build/ dist/ .pytest_cache/
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete 2>/dev/null || true
+
+# ── Sovereign-go: full stack build (PDF "SHIP IT" target) ────────────────
+.PHONY: sovereign-go build-all release submodules offline-kit pulse-lock
+
+sovereign-go: submodules install test build-all ## Full pipeline: submodules → install → test → build-all
+
+build-all: ## Build all binaries (APK/EXE/DEB/WASM)
+	bash scripts/build_android.sh || echo "android skipped"
+	bash scripts/build_linux.sh || echo "linux skipped"
+	bash scripts/build_web.sh || echo "web skipped"
+
+release: ## Cut a release: make release VERSION=v0.2.0
+	bash scripts/release.sh $(VERSION)
+
+submodules: ## Init + pin the 18 OGU submodules
+	python3 integrations/sync_integrations.py init
+	python3 integrations/sync_integrations.py pin
+
+offline-kit: ## Build the 32 GB bootable offline USB image
+	bash scripts/build_offline_kit.sh
+
+pulse-lock: ## Run the dashboard with Pulse Lock enabled
+	PULSE_LOCK=1 .venv/bin/python -m sovereign.main dashboard

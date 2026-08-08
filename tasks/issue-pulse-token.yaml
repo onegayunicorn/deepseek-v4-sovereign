@@ -1,0 +1,8 @@
+# Task type: issue-pulse-token — biometric admin session issuance
+id: issue-pulse-token
+description: Issue a 15s pulse session from a live BCI sample
+agent: pulse-warden
+payload_schema:
+  ttl_seconds: { type: integer, default: 15 }
+defaults: { priority: 6, max_retries: 0 }
+output: data/artifacts/outputs/pulse-{ts}.json

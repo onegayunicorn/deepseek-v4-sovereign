@@ -8,8 +8,9 @@ PDF activation API::
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 CARRIER_HZ = 432
 LATENCY_S = 0.300
@@ -20,6 +21,18 @@ class BCIChannel:
     name: str
     frequency: float
     locked: bool = False
+
+
+@dataclass
+class BciSample:
+    """One biometric sample for liveness checks."""
+
+    timestamp: float
+    heart_rate: float
+    eeg_alpha: float
+    eeg_gamma: float
+    signal_strength: float
+    respiration: float
 
 
 class BCIInterface:
@@ -55,8 +68,35 @@ class BCIInterface:
             "channels": len(self.channels),
         }
 
+    # ── liveness support (Pulse Lock) ────────────────────────────────────
+    async def start(self) -> None:
+        """Connect hardware (no-op without a real device)."""
+        return None
+
+    async def stop(self) -> None:
+        """Disconnect hardware (no-op without a real device)."""
+        return None
+
+    def is_connected(self) -> bool:
+        return self.initialized and self.is_locked()
+
+    def latest(self) -> Optional[BciSample]:
+        """Return the most recent biometric sample (simulated when no
+        hardware is attached; None before initialize())."""
+        if not self.initialized:
+            return None
+        base = 66.0 + (time.time() * 0.1) % 2.0  # gentle drift around 66 bpm
+        return BciSample(
+            timestamp=time.time(),
+            heart_rate=base,
+            eeg_alpha=0.42,
+            eeg_gamma=0.18,
+            signal_strength=0.72,
+            respiration=14.0,
+        )
+
 
 # Module-level singleton (PDF Phase 8.1).
 bci = BCIInterface()
 
-__all__ = ["BCIInterface", "bci", "BCIChannel"]
+__all__ = ["BCIInterface", "bci", "BCIChannel", "BciSample"]

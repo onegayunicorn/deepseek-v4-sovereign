@@ -11,3 +11,10 @@ task_types:
   - { id: scout,       file: scout.yaml }
   - { id: audit,       file: audit.yaml }
   - { id: model-benchmark, file: benchmark.yaml }
+  - { id: pero-start,      file: pero-start.yaml }
+  - { id: ingest-stream,   file: ingest-stream.yaml }
+  - { id: tune-laser,      file: tune-laser.yaml }
+  - { id: issue-pulse-token, file: issue-pulse-token.yaml }
+  - { id: halt-on-signal-loss, file: halt-on-signal-loss.yaml }
+  - { id: build-all,       file: build-all.yaml }
+  - { id: matrix-evolve,   file: matrix-evolve.yaml }

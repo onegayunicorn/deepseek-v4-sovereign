@@ -45,4 +45,6 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
     // AndroidX WebKit: modern WebView APIs for the dashboard shell.
     implementation("androidx.webkit:webkit:1.9.0")
+    // Coroutines: free-roaming polling loop in BubbleService.
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }

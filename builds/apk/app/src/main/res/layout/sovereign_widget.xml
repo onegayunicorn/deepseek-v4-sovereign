@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0B1020"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/widget_title"
+        android:textColor="#4FD8E0"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/widget_fidelity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="F —"
+        android:textColor="#E8ECF8"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/widget_pairs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="— pairs"
+        android:textColor="#9AA6C8"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/widget_bci"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BCI —"
+        android:textColor="#9AA6C8"
+        android:textSize="13sp" />
+</LinearLayout>

@@ -1,0 +1,20 @@
+# SOVEREIGN — pulse warden (biometric admin boundary)
+id: pulse-warden
+kind: group
+description: Enforce the biometric admin boundary — no passwords, only the pulse.
+triggers: [admin.request, bci.lost, session.expired]
+tasks: [issue-pulse-token, halt-on-signal-loss]
+policies:
+  require_liveness: true
+  session_ttl_seconds: 15
+  min_signal_strength: 0.55
+  on_signal_loss: halt_tasks_and_notify
+agents:
+  - id: liveness-gate
+    kind: tool
+    module: neural.bci_v95.pulse_lock
+    description: Pulse Lock liveness gate + session issuance
+  - id: signal-monitor
+    kind: tool
+    module: neural.bci_v95.interface
+    description: BCI signal monitoring + loss detection

@@ -1,0 +1,11 @@
+# Event trigger: PERO frame batch → ingest + tune
+id: pero-frame-hook
+kind: event
+event: pero.frame
+enabled: true
+task:
+  type: ingest-stream
+  payload:
+    frames: 60
+    crystal: BBO
+  priority: 4

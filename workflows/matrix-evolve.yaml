@@ -1,0 +1,10 @@
+# Workflow: matrix-evolve — reality-matrix expansion cycle
+id: matrix-evolve-cycle
+name: Matrix Evolution Cycle
+description: Integrate engine state into the matrix, evolve recursively, report entropy/coherence.
+trigger: event/pero-frame.yaml
+steps:
+  - task: ingest-stream
+    payload: { frames: 60, crystal: BBO }
+  - task: matrix-evolve
+    payload: { rounds: 3, growth: 2, amplitude_floor: 0.05 }

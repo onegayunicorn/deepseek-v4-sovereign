@@ -1,0 +1,9 @@
+# Task type: build-all — cross-platform binary build pipeline
+id: build-all
+description: Build APK/EXE/DEB/WASM binaries (CI or local scripts)
+agent: build-agent
+payload_schema:
+  targets: { type: array, items: { type: string }, default: [apk, exe, deb, wasm] }
+  sign: { type: boolean, default: false }
+defaults: { priority: 5, max_retries: 1 }
+output: dist/

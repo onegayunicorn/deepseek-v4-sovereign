@@ -1,0 +1,11 @@
+# Task type: tune-laser — model-recommended laser parameter adjustment
+id: tune-laser
+description: Apply tuning-agent recommendation to laser params (clamped)
+agent: pero-loop-agent
+payload_schema:
+  power_mw: { type: number }
+  temperature_c: { type: number }
+  wavelength_nm: { type: integer }
+  confidence: { type: number, minimum: 0, maximum: 1 }
+defaults: { priority: 5, max_retries: 1 }
+output: data/artifacts/outputs/tune-{ts}.json

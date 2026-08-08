@@ -59,3 +59,11 @@ sovereign = ["py.typed"]
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+
+[tool.pytest.ini_options]
+# Default collection = repo root tests/ (gemma module tests run explicitly,
+# e.g. `pytest models/gemma-3-12b-it-jailbreak/tests`).
+testpaths = ["tests"]
+markers = [
+    "slow: 72h closed-loop soak harness (CI runs the 3-min variant)",
+]

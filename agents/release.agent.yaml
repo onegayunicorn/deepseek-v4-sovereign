@@ -1,0 +1,20 @@
+# SOVEREIGN — release agent (cut, sign, publish)
+id: release-agent
+kind: group
+description: Cut, sign and publish a Sovereign release.
+triggers: [tag.push(v*), manual]
+tasks: [build-all]
+tools: [gh, git, hf-cli, scp]
+agents:
+  - id: changelog-writer
+    kind: tool
+    description: Generate changelog from commits
+  - id: signer
+    kind: tool
+    script: scripts/sign_all.sh
+    description: Sign all binaries
+  - id: publisher
+    kind: tool
+    script: scripts/release.sh
+    channels: [github-releases, huggingface-spaces, github-pages]
+    description: Publish release artifacts

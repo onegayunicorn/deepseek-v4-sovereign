@@ -8,3 +8,4 @@ modules:
   - { id: bci,           file: bci-module.yaml }
   - { id: security,      file: security-module.yaml }
   - { id: integration,   file: integration-module.yaml }
+  - { id: matrix,        file: matrix-module.yaml }

@@ -4,3 +4,4 @@ version: "1.0"
 workflows:
   - { id: sovereign-boot,      file: sovereign-boot.yaml }
   - { id: lineage-sync-cycle,  file: lineage-sync.yaml }
+  - { id: matrix-evolve-cycle, file: matrix-evolve.yaml }

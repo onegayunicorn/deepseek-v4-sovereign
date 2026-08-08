@@ -9,4 +9,17 @@
 
     <!-- Shown when the dashboard fails to load. -->
     <string name="dashboard_load_error">Unable to reach the Sovereign dashboard</string>
+
+    <!-- Free-roaming companion strings. -->
+    <string name="bubble_description">Sovereign companion bubble</string>
+    <string name="bubble_title">Sovereign companion</string>
+    <string name="bubble_hint">Talk to your orchestrator…</string>
+    <string name="bubble_send">Send</string>
+    <string name="overlay_hint">Grant overlay permission (menu → request) to enable the roaming bubble.</string>
+    <string name="bubble_started">Sovereign companion started — bubble active.</string>
+    <string name="start_bubble">Start bubble companion</string>
+    <string name="request_overlay">Grant overlay permission</string>
+
+    <!-- Widget strings. -->
+    <string name="widget_title">SOVEREIGN</string>
 </resources>

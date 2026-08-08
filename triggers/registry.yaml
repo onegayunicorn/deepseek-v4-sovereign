@@ -8,3 +8,5 @@ triggers:
   - { id: agent-failed-hook,    file: event/agent-failed.yaml,        kind: event }
   - { id: github-push,          file: webhook/github-push.yaml,       kind: webhook }
   - { id: hf-model-update,      file: webhook/hf-model-update.yaml,   kind: webhook }
+  - { id: pero-frame-hook,      file: event/pero-frame.yaml,          kind: event }
+  - { id: bci-lost-hook,        file: event/bci-lost.yaml,            kind: event }

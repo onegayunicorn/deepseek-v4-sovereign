@@ -8,3 +8,7 @@ agents:
   - { id: hardware,            file: hardware.agent.yaml }
   - { id: connected-projects,  file: connected-projects.agent.yaml }
   - { id: distribution,        file: distribution.agent.yaml }
+  - { id: build-agent,         file: build.agent.yaml }
+  - { id: pero-loop-agent,     file: pero-loop.agent.yaml }
+  - { id: release-agent,       file: release.agent.yaml }
+  - { id: pulse-warden,        file: pulse-warden.agent.yaml }

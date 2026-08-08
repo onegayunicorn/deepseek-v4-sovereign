@@ -1,0 +1,28 @@
+name: "Sign Binaries"
+
+on:
+  workflow_run:
+    workflows: ["Build Sovereign Binaries"]
+    types: [completed]
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+      - name: Sign Android
+        env:
+          KEYSTORE: ${{ secrets.KEYSTORE_B64 }}
+          KS_PASS: ${{ secrets.KEYSTORE_PASS }}
+        run: |
+          if [ -n "$KEYSTORE" ]; then
+            echo "$KEYSTORE" | base64 -d > deploy/android/keystore.jks
+            bash scripts/sign_apk.sh dist/Sovereign.apk || echo "sign_apk skipped"
+          else
+            echo "no keystore secret — signing skipped"
+          fi
+      - name: Sign Windows (best-effort)
+        run: bash scripts/sign_exe.sh dist/Sovereign.exe || true
+      - uses: actions/upload-artifact@v4
+        with: { name: signed-binaries, path: dist/ }

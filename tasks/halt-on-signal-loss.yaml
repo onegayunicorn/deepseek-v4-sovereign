@@ -1,0 +1,9 @@
+# Task type: halt-on-signal-loss — emergency stop on BCI signal loss
+id: halt-on-signal-loss
+description: Halt all running tasks and notify when the BCI signal is lost
+agent: pulse-warden
+payload_schema:
+  reason: { type: string, default: bci-signal-loss }
+  notify: { type: boolean, default: true }
+defaults: { priority: 10, max_retries: 0 }
+output: data/artifacts/outputs/halt-{ts}.json

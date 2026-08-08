@@ -1,0 +1,13 @@
+# Reality Matrix configuration
+matrix:
+  grid_size: 8
+  evolution:
+    growth: 2
+    amplitude_floor: 0.05
+    phase_step: 0.35
+    max_depth: 12
+  anchors:
+    - entanglement-engine
+    - council
+    - teleos
+  telemetry: true

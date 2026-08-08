@@ -17,14 +17,24 @@
     <!-- Bluetooth connections (API 31+) to Sovereign peripherals. -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
+    <!-- Free-roaming bubble (chat head) overlay. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- Foreground companion service. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <!-- Proactive notifications (API 33+ runtime grant). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sovereign"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="true">
 
-        <!-- Single launcher activity hosting the dashboard WebView. -->
+        <!-- Single launcher activity hosting the dashboard WebView + companion controls. -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -33,6 +43,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Free-roaming bubble service: overlay chat head + roaming loop. -->
+        <service
+            android:name=".BubbleService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="sovereign_free_roaming_companion" />
+        </service>
+
+        <!-- Home-screen telemetry widget. -->
+        <receiver
+            android:name=".SovereignWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/sovereign_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

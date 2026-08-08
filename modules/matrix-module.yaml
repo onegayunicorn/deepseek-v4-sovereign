@@ -1,0 +1,16 @@
+# Module: matrix — reality-matrix integration + evolution
+id: matrix
+description: >
+  Entangled reality-branch grid anchored to engine state, with recursive
+  quantum evolution and entropy-based self-optimization.
+package: matrix
+config: matrix/config.yaml
+hooks:
+  - matrix/hooks.py::on_matrix_integrate
+  - matrix/hooks.py::on_matrix_evolve
+capabilities:
+  - branch-grid-integration
+  - recursive-evolution
+  - entropy-selection
+  - self-optimization
+status: integrated

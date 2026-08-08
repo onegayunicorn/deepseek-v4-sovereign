@@ -1,0 +1,10 @@
+# Task type: matrix-evolve — run one matrix evolution epoch
+id: matrix-evolve
+description: Expand + evolve + select reality-matrix branches (self-optimizing)
+agent: sovereign-core
+payload_schema:
+  rounds: { type: integer, default: 3 }
+  growth: { type: integer, default: 2 }
+  amplitude_floor: { type: number, default: 0.05 }
+defaults: { priority: 3, max_retries: 2 }
+output: data/artifacts/outputs/matrix-{ts}.json
