@@ -5,8 +5,14 @@ cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p dist
 
 echo "→ PyInstaller onefile (Linux x86_64)"
-.venv/bin/pip install -q pyinstaller 2>/dev/null || pip install -q pyinstaller
-.venv/bin/pyinstaller --clean --noconfirm builds/exe/sovereign.spec
+if [ -x .venv/bin/pyinstaller ]; then
+  PYI=".venv/bin/pyinstaller"
+elif command -v pyinstaller >/dev/null 2>&1; then
+  PYI="pyinstaller"
+else
+  pip install -q pyinstaller && PYI="pyinstaller"
+fi
+"$PYI" --clean --noconfirm builds/exe/sovereign.spec
 mv dist/sovereign dist/Sovereign-linux-x86_64 2>/dev/null || true
 
 echo "→ DEB packaging"

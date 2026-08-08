@@ -86,7 +86,5 @@ jobs:
             Sovereign.ipa/Sovereign.ipa
             Sovereign.deb/Sovereign.deb
 
-  pages:
-    needs: web-wasm
-    permissions: { pages: write, id-token: write }
-    uses: ./.github/workflows/pages.yml
+  # NOTE: GitHub Pages is deployed by .github/workflows/pages.yml directly
+  # (its own push trigger) — not called from here.
