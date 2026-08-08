@@ -1,0 +1,6 @@
+# SOVEREIGN — workflow registry
+# Workflows chain triggers → tasks → actions into repeatable processes.
+version: "1.0"
+workflows:
+  - { id: sovereign-boot,      file: sovereign-boot.yaml }
+  - { id: lineage-sync-cycle,  file: lineage-sync.yaml }

@@ -1,0 +1,18 @@
+# lineage-sync — daily entanglement lineage anchor + memory prune.
+# Triggered by: daily-lineage-sync (cron).
+id: lineage-sync-cycle
+description: Anchor 12 ancestral generations and sync the lineage tensor.
+trigger: cron/daily-lineage-sync.yaml
+steps:
+  - task: lineage-sync
+    with:
+      generations: 12
+  - task: scout
+    with:
+      scope: quantum.quantumlineagebridge
+  - action: memory.store
+    with:
+      key: lineage.last_anchor
+  - action: backup.snapshot
+    with:
+      target: data/memory

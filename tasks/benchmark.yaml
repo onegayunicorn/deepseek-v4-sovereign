@@ -1,0 +1,10 @@
+# Task type: model-benchmark — HF model update → re-index + benchmark
+id: model-benchmark
+description: Re-index a model revision and run benchmark/eval on the updated artifact
+agent: sovereign-core
+payload_schema:
+  model: { type: string }
+  revision: { type: string }
+  dataset: { type: string }
+defaults: { priority: 4, max_retries: 2 }
+output: data/artifacts/outputs/benchmark-{ts}.json

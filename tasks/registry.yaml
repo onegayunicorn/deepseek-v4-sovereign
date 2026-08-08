@@ -10,3 +10,4 @@ task_types:
   - { id: lineage-sync, file: lineage-sync.yaml }
   - { id: scout,       file: scout.yaml }
   - { id: audit,       file: audit.yaml }
+  - { id: model-benchmark, file: benchmark.yaml }

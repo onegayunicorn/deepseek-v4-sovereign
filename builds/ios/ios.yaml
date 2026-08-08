@@ -1,0 +1,39 @@
+# Sovereign iOS app — Xcode project settings (generated on macOS CI).
+#
+# The Swift shell hosts the Python FastAPI orchestrator (uvicorn) and the
+# sovereign websocket bridge. For the full build run `builds/ios/build_ios.sh`
+# on a macOS machine; the kivy-ios toolchain generates `Sovereign.xcodeproj`.
+
+name: Sovereign
+bundle_id: ai.sovereign.orchestrator
+platform: ios
+deployment_target: "15.0"
+
+# Swift shell hosts the Python runtime.
+swift_shell:
+  sources:
+    - ios/AppDelegate.swift
+    - ios/SceneDelegate.swift
+  frameworks:
+    - SwiftUI
+    - Network
+
+# Python core baked into the app bundle.
+python:
+  entrypoint: sovereign.main:app
+  packages:
+    - requirements.txt
+  assets:
+    - ../../models/deepseek-v4-flash-0731
+
+# Signing (device builds only; simulator builds need no identity).
+signing:
+  team_id: ""            # set in CI secrets: IOS_TEAM_ID
+  code_sign_style: Automatic
+  provisioning_profile: "" # set in CI secrets: IOS_PROVISIONING_PROFILE
+
+build:
+  scheme: Sovereign
+  configuration: Debug
+  destinations:
+    - generic/platform=iOS Simulator

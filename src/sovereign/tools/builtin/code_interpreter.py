@@ -56,3 +56,10 @@ def run_code(code: str, *, language: str = "python", timeout: int = 120) -> dict
             "traceback": traceback.format_exc(limit=5),
             "duration_ms": int((time.monotonic() - started) * 1000),
         }
+    finally:
+        # Restore the real import machinery — the sandbox patch must not
+        # leak into the host process (it broke later `import sys` calls).
+        import builtins as _real_builtins
+
+        if "_original_import" in namespace and callable(namespace["_original_import"]):
+            _real_builtins.__import__ = namespace["_original_import"]

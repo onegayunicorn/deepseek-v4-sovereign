@@ -28,16 +28,33 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.4",
     "pyinstaller>=6.6",
+    "build>=1.2",
 ]
 
 [project.scripts]
 sovereign = "sovereign.main:cli"
 
+# The `sovereign` package lives under src/; the PDF-spec modules
+# (quantum, bio, agi, zenith, teleos, neural, pero) are top-level
+# packages at the repo root and ship in the wheel too.
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["src", "."]
+include = [
+    "sovereign*",
+    "quantum*",
+    "bio*",
+    "agi*",
+    "zenith*",
+    "teleos*",
+    "neural*",
+    "pero*",
+    "hardware*",
+    "integrations*",
+]
 
 [tool.setuptools.package-data]
 sovereign = ["py.typed"]
+"quantum" = ["py.typed"]
 
 [tool.ruff]
 target-version = "py311"

@@ -1,0 +1,25 @@
+# sovereign-boot — boot the full sovereign stack (PDF Phase 8.1).
+# Triggered by: hourly-health-audit (cron) or on-deploy event.
+id: sovereign-boot
+description: Boot zenith OS, TeleOS, BCI, DNA, AGI OMEGA and the API engine.
+trigger: event/task-completed.yaml
+steps:
+  - task: coordinate
+    with:
+      target: zenith.os
+  - task: coordinate
+    with:
+      target: teleos.network
+  - task: coordinate
+    with:
+      target: neural.bci_v95
+  - task: execute
+    with:
+      target: bio.dna.harmonic_resonance
+  - task: execute
+    with:
+      target: agi.omega_v3.orchestrator
+  - action: webhook.notify
+    with:
+      channel: status
+      message: "SOVEREIGN boot complete — all systems nominal"

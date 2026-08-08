@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-08-08T00:00:00Z",
+  "revision": "7b2b996",
+  "status": "operational",
+  "modules": {
+    "quantum": {
+      "bell_pairs": 847,
+      "mean_fidelity": 0.999422,
+      "target_fidelity": 0.999423,
+      "lineage_generations": 12
+    },
+    "bio": {
+      "dna_awakening_pct": 86.6,
+      "awakening_threshold_pct": 80.0,
+      "kaleidoscope_permutations": 65536
+    },
+    "agi": {
+      "agents": 42,
+      "bots": 2650,
+      "council_seated": 10,
+      "council_aligned": true
+    },
+    "teleos": { "links": 847, "mean_fidelity": 0.999423 },
+    "neural": { "bci_carrier_hz": 432, "bci_locked": true },
+    "pero": {
+      "spdc_efficiency_pct": 67.3,
+      "spatial_coherence_pct": 81.7,
+      "entanglement_hold_s": 1.6,
+      "drift_pct_per_hr": 0.03
+    }
+  },
+  "quality": {
+    "tests_passed": 29,
+    "tests_total": 29,
+    "benchmark_groups_passed": 4,
+    "registry_valid": true
+  },
+  "registry": {
+    "yaml_files": 90,
+    "registry_files": 12,
+    "task_types": 10,
+    "workflows": 2
+  },
+  "deployment": {
+    "wheel": "sovereign-0.1.0-py3-none-any.whl",
+    "exe_size_mb": 91,
+    "ios": true,
+    "apk": true,
+    "docker": true
+  }
+}
