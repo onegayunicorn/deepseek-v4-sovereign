@@ -1,0 +1,24 @@
+# Model config — gemma-3-12b-it-jailbreak (GGUF)
+model:
+  id: gemma-3-12b-it-jailbreak
+  repo_id: "Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF"
+  mirror_repo_id: "mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF"
+  params: 12B
+  architecture: gemma3
+  format: GGUF
+  context_length: 8192
+  license: gemma
+  language: english
+  vision: true
+  lineage:
+    - google/gemma-3-12b-pt
+    - google/gemma-3-12b-it
+    - alexwirrell/gemma-3-12b-it-jailbreak-EN
+    - Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF
+  type: uncensored-jailbreak
+  use_cases:
+    - red-teaming
+    - alignment-vulnerability-testing
+    - overfit-attack-research
+    - conversational-ai
+    - vision-applications

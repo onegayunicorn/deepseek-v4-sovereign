@@ -1,0 +1,29 @@
+# Trigger: model loaded
+name: On Model Load
+description: "Trigger when model is loaded"
+event: model.loaded
+
+conditions:
+  - type: model_name
+    value: "gemma-3-12b-it-jailbreak"
+  - type: quant
+    value: "Q4_K_M"
+
+actions:
+  - type: log
+    message: "Model loaded successfully"
+
+  - type: validate
+    script: "hooks/pre_load.py"
+
+  - type: notify
+    channel: "sovereign-status"
+    message: "Gemma-3-12B jailbreak loaded — 7.3GB · Q4_K_M · ready for inference"
+
+  - type: broadcast
+    channel: "model/ready"
+    payload:
+      model: "gemma-3-12b-it-jailbreak"
+      quant: "Q4_K_M"
+      size_gb: 7.3
+      status: "ready"

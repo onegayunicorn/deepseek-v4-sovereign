@@ -1,0 +1,45 @@
+name: Delete HuggingFace GGUF Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "DELETE" to confirm'
+        required: true
+        type: string
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'DELETE'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install huggingface_hub
+        run: pip install huggingface_hub
+
+      - name: Delete repository (IRREVERSIBLE)
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'EOF'
+          from huggingface_hub import HfApi
+          api = HfApi()
+          api.delete_repo(
+              repo_id="Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF",
+              repo_type="model",
+          )
+          print("Deleted Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF")
+          EOF
+
+      - name: Update monorepo
+        run: |
+          echo "HF GGUF repository deleted"
+          echo "Model lives on at models/gemma-3-12b-it-jailbreak/"
+          echo "Update download sources to mradermacher mirror: python scripts/migrate_to_monorepo.py --apply"

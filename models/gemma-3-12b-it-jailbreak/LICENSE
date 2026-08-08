@@ -1,0 +1,15 @@
+# License — Gemma-3-12B Jailbreak module
+
+This module is a packaging/documentation wrapper around a third-party
+quantized model. The underlying model is governed by the **Google Gemma
+Terms of Use** (Gemma license):
+
+- Official terms: https://ai.google.dev/gemma/terms
+- Model card: https://huggingface.co/google/gemma-3-12b-it
+
+The files in this directory (configs, scripts, hooks, tests, docs) are
+provided under the repository's default license (see repository root
+`LICENSE`) unless noted otherwise.
+
+Weights are NOT redistributed in this repository — download them at
+runtime from the Hugging Face Hub (see `README.md`).

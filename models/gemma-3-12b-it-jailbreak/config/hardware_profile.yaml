@@ -1,0 +1,16 @@
+# Hardware profile — optimized for CPU inference
+hardware:
+  cpu: "AMD Ryzen Threadripper Zen 9 5000 (Shimada Peak)"
+  memory: 8
+  compute_power: 14.00
+  profile: CPU-rich / balanced (GPU-poor → optimized for CPU inference)
+  visibility: Publicly Visible
+  supported_accelerators:
+    - NVIDIA
+    - AMD
+    - INTEL
+    - QUALCOMM
+    - Apple
+recommended_quant: Q4_K_M
+reason: "7.3 GB fits perfectly in 8GB RAM — optimal balance"
+headroom_gb: 0.7

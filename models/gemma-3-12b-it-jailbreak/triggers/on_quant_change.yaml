@@ -1,0 +1,29 @@
+# Trigger: quantization change
+name: On Quant Change
+description: "Trigger when the active quantization changes"
+event: quant.changed
+
+conditions:
+  - type: model_name
+    value: "gemma-3-12b-it-jailbreak"
+  - type: previous_quant
+    operator: "not_equals"
+    value: "{{ payload.new_quant }}"
+
+actions:
+  - type: validate
+    script: "hooks/on_quantization.py"
+
+  - type: log
+    message: "Quantization changed {{ payload.previous_quant }} → {{ payload.new_quant }}"
+
+  - type: notify
+    channel: "sovereign-status"
+    message: "Quant changed to {{ payload.new_quant }}"
+
+  - type: broadcast
+    channel: "model/quant_changed"
+    payload:
+      model: "gemma-3-12b-it-jailbreak"
+      previous_quant: "{{ payload.previous_quant }}"
+      new_quant: "{{ payload.new_quant }}"

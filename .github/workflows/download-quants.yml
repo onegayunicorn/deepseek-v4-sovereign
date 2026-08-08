@@ -1,0 +1,29 @@
+name: Download Quants (CI cache)
+
+on:
+  workflow_dispatch:
+    inputs:
+      quant:
+        description: "Quant variant to cache (e.g. Q4_K_M)"
+        required: true
+        default: "Q4_K_M"
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Cache GGUF
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: models/gemma-3-12b-it-jailbreak/assets
+          key: gguf-${{ inputs.quant }}-${{ github.sha }}
+      - name: Download quant
+        if: steps.cache.outputs.cache-hit != 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python scripts/hf_download.py --quant ${{ inputs.quant }}

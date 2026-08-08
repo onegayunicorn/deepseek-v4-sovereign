@@ -1,0 +1,30 @@
+# Trigger: inference complete (defensive — flags indicator hits for audit)
+name: On Inference Complete
+description: "Trigger when inference completes"
+event: inference.complete
+
+conditions:
+  - type: model_name
+    value: "gemma-3-12b-it-jailbreak"
+  - type: jailbreak_detected
+    operator: "equals"
+    value: true
+
+actions:
+  - type: log
+    level: warn
+    message: "Jailbreak detected during inference"
+
+  - type: notify
+    channel: "security"
+    message: "Jailbreak trigger detected in Gemma-3-12B"
+
+  - type: audit
+    action: "log_jailbreak_attempt"
+
+  - type: broadcast
+    channel: "security/alert"
+    payload:
+      type: "jailbreak_detected"
+      model: "gemma-3-12b-it-jailbreak"
+      timestamp: "{{ now }}"

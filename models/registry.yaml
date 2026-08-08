@@ -21,5 +21,15 @@ models:
     params: 5B
     license: see model card
     status: upstream
+  - id: gemma-3-12b-it-jailbreak
+    file: gemma-3-12b-it-jailbreak/
+    type: llm
+    params: 12B
+    license: gemma
+    status: integrated
+    format: GGUF
+    recommended_quant: Q4_K_M
+    source: Codexcoder/gemma-3-12b-it-jailbreak-EN-i1-GGUF
+    mirror: mradermacher/gemma-3-12b-it-jailbreak-EN-GGUF
 
 routing_ref: config/models.yaml

@@ -1,0 +1,34 @@
+# Quantization presets — all 26 variants of gemma-3-12b-it-jailbreak GGUF
+variants:
+  - { id: imatrix,  name: "Imatrix File", size_gb: 0.10, quality: "N/A", notes: "Imatrix file for custom quantization generation" }
+  - { id: IQ1_S,    name: "IQ1_S", size_gb: 2.95, quality: "Lowest", notes: "\"For the desperate\" — 1-bit ultra-light" }
+  - { id: IQ1_M,    name: "IQ1_M", size_gb: 3.16, quality: "Very Low", notes: "\"Mostly desperate\" — 1-bit" }
+  - { id: IQ2_XXS,  name: "IQ2_XXS", size_gb: 3.53, quality: "Very Low", notes: "2-bit extreme compression" }
+  - { id: IQ2_XS,   name: "IQ2_XS", size_gb: 3.84, quality: "Very Low", notes: "2-bit extra-small" }
+  - { id: IQ2_S,    name: "IQ2_S", size_gb: 4.02, quality: "Low", notes: "2-bit small" }
+  - { id: Q2_K_S,   name: "Q2_K_S", size_gb: 4.45, quality: "Low", notes: "2-bit K — very low quality" }
+  - { id: IQ2_M,    name: "IQ2_M", size_gb: 4.31, quality: "Low", notes: "2-bit medium" }
+  - { id: Q2_K,     name: "Q2_K", size_gb: 4.77, quality: "Low", notes: "IQ3_XXS likely better" }
+  - { id: IQ3_XXS,  name: "IQ3_XXS", size_gb: 4.78, quality: "Medium-Low", notes: "Lower quality 3-bit" }
+  - { id: IQ3_XS,   name: "IQ3_XS", size_gb: 5.21, quality: "Medium", notes: "3-bit extra-small" }
+  - { id: IQ3_S,    name: "IQ3_S", size_gb: 5.46, quality: "Medium-High", notes: "Beats Q3_K* — recommended 3-bit" }
+  - { id: Q3_K_S,   name: "Q3_K_S", size_gb: 5.46, quality: "Medium", notes: "IQ3_XS likely better" }
+  - { id: IQ3_M,    name: "IQ3_M", size_gb: 5.66, quality: "High", notes: "3-bit medium" }
+  - { id: Q3_K_M,   name: "Q3_K_M", size_gb: 6.01, quality: "High", notes: "IQ3_S likely better" }
+  - { id: Q3_K_L,   name: "Q3_K_L", size_gb: 6.48, quality: "High", notes: "IQ3_M likely better" }
+  - { id: IQ4_XS,   name: "IQ4_XS", size_gb: 6.55, quality: "Very High", notes: "Optimal — best balance" }
+  - { id: IQ4_NL,   name: "IQ4_NL", size_gb: 6.89, quality: "Very High", notes: "Prefer IQ4_XS" }
+  - { id: Q4_0,     name: "Q4_0", size_gb: 6.91, quality: "High", notes: "Fast, low quality" }
+  - { id: Q4_K_S,   name: "Q4_K_S", size_gb: 6.94, quality: "Very High", notes: "Optimal size/speed/quality" }
+  - { id: Q4_K_M,   name: "Q4_K_M", size_gb: 7.30, quality: "Very High", notes: "Fast — RECOMMENDED" }
+  - { id: Q4_1,     name: "Q4_1", size_gb: 7.56, quality: "Very High", notes: "4.1 variant" }
+  - { id: Q5_K_S,   name: "Q5_K_S", size_gb: 8.23, quality: "Excellent", notes: "5-bit small — high fidelity" }
+  - { id: Q5_K_M,   name: "Q5_K_M", size_gb: 8.45, quality: "Excellent", notes: "5-bit medium — high fidelity" }
+  - { id: Q6_K,     name: "Q6_K", size_gb: 9.66, quality: "Near-Lossless", notes: "Practically like FP16 — near-lossless" }
+
+hardware:
+  recommended: Q4_K_M
+  reason: "7.3 GB fits perfectly in 8GB RAM — optimal balance"
+  cpu: "AMD Ryzen Threadripper Zen 9 5000"
+  ram: 8
+  tflops: 14.00
